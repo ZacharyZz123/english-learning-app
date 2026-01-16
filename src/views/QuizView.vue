@@ -68,6 +68,14 @@
 
       <!-- 填空题输入框 (挑战模式) -->
       <div v-if="currentQuestion.type === 'fillBlank'" class="fill-blank-section">
+        <!-- 音标显示 -->
+        <div v-if="currentQuestion.phonetic" class="phonetic-display">
+          💡 音标：{{ currentQuestion.phonetic }}
+        </div>
+        <!-- 中文提示显示 -->
+        <div v-if="currentQuestion.chineseHint" class="chinese-hint">
+          📝 提示：{{ currentQuestion.chineseHint }}
+        </div>
         <div class="input-wrapper" :class="{ 'has-error': showResult && !isCorrect, 'has-success': showResult && isCorrect }">
           <input 
             type="text" 

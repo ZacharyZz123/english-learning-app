@@ -6,6 +6,97 @@
 import wordBank from '../data/word_bank.json'
 import extendedBank from '../data/extended_bank.json'
 
+// 元音分类表
+const VOWEL_CATEGORIES = {
+  // 双元音（8个）
+  diphthongs: ['eɪ', 'aɪ', 'ɔɪ', 'əʊ', 'aʊ', 'ɪə', 'eə', 'ʊə'],
+  // 长元音（5个）
+  longVowels: ['iː', 'ɑː', 'ɔː', 'uː', 'ɜː'],
+  // 短元音（7个）
+  shortVowels: ['ɪ', 'e', 'æ', 'ɒ', 'ʊ', 'ʌ', 'ə']
+}
+
+// 字母组合到音标的映射表
+const LETTER_TO_PHONETIC = {
+  // 元音字母组合
+  'ee': '/iː/ 长元音',    // meet, see
+  'ea': '/iː/ 长元音',    // read, teacher
+  'oo': '/uː/ 长元音',    // food, school
+  'ou': '/aʊ/ 双元音',    // house, out
+  'ow': '/aʊ/ 双元音',    // how, now
+  'ai': '/eɪ/ 双元音',    // rain, wait
+  'ay': '/eɪ/ 双元音',    // day, play
+  'oi': '/ɔɪ/ 双元音',    // join, coin
+  'oy': '/ɔɪ/ 双元音',    // boy, toy
+  'ar': '/ɑː/ 长元音',    // car, star
+  'or': '/ɔː/ 长元音',    // for, morning
+  'er': '/ɜː/ 长元音',    // her, teacher
+  'ir': '/ɜː/ 长元音',    // first, girl
+  'ur': '/ɜː/ 长元音',    // turn, nurse
+  
+  // 辅音字母组合
+  'sh': '/ʃ/ 摩擦音',     // she, shop
+  'ch': '/tʃ/ 破擦音',    // chair, teacher
+  'th': '/θ/ 摩擦音',     // think, three
+  'ng': '/ŋ/ 鼻音',       // sing, ring
+  'ck': '/k/ 爆破音',     // back, clock
+  'ph': '/f/ 摩擦音',     // phone, photo
+  'wh': '/w/ 半元音',     // what, when
+  'wr': '/r/ 颤音',       // write, wrong
+  'kn': '/n/ 鼻音',       // know, knife
+  'mb': '/m/ 鼻音',       // climb, lamb
+  'gh': '不发音',         // night, light
+}
+
+// 获取主要元音类型（自动识别）
+const getMainVowelType = (phonetic) => {
+  if (!phonetic) return null
+  
+  // 1. 优先检查双元音（更长的模式）
+  for (const diphthong of VOWEL_CATEGORIES.diphthongs) {
+    if (phonetic.includes(diphthong)) {
+      return `双元音 /${diphthong}/`
+    }
+  }
+  
+  // 2. 检查长元音
+  for (const longVowel of VOWEL_CATEGORIES.longVowels) {
+    if (phonetic.includes(longVowel)) {
+      return `长元音 /${longVowel}/`
+    }
+  }
+  
+  // 3. 检查短元音
+  for (const shortVowel of VOWEL_CATEGORIES.shortVowels) {
+    if (phonetic.includes(shortVowel)) {
+      return `短元音 /${shortVowel}/`
+    }
+  }
+  
+  return null
+}
+
+// 生成单词解析（优先使用人工预设，自动补充为辅）
+const generateExplanation = (word) => {
+  const parts = [`正确答案：${word.english}`]
+  
+  // 优先级1：使用人工预设的拆分数据
+  if (word.breakdown) {
+    parts.push('音形拆解：')
+    parts.push(`  ${word.breakdown.letters}`)
+    parts.push(`  ${word.breakdown.sounds}`)
+    parts.push(`解析：${word.breakdown.tips}`)
+  } else {
+    // 优先级2：自动识别主要元音类型
+    const vowelType = getMainVowelType(word.phonetic)
+    if (vowelType) {
+      parts.push(`解析：主要元音为${vowelType}`)
+    }
+  }
+  
+  return parts.join('\n')
+}
+
 // 随机打乱数组
 const shuffleArray = (array) => {
   const arr = [...array]
@@ -1005,7 +1096,7 @@ const generatePhonicsQuestions = (count, isChallenge = false) => {
   const allVocab = wordBank.vocabulary
 
   // 根据音标选单词 - 使用相似发音的单词作为干扰项
-  for (let i = 0; i < Math.min(count / 2, vocab.length); i++) {
+  for (let i = 0; i < Math.min(count / 3, vocab.length); i++) {
     const word = vocab[i]
     
     // 获取发音相似的单词作为干扰项
@@ -1023,13 +1114,13 @@ const generatePhonicsQuestions = (count, isChallenge = false) => {
       explanation: {
         title: "音标匹配",
         content: `${word.phonetic} → ${word.english}`,
-        detail: `音标：${word.phonetic}\n单词：${word.english}\n中文：${word.chinese}\n\n音标学习技巧：注意元音和辅音的发音规则`
+        detail: generateExplanation(word)
       }
     })
   }
   
   // 根据单词选音标 - 使用相似音标作为干扰项
-  for (let i = 0; i < Math.min(count / 2, vocab.length); i++) {
+  for (let i = 0; i < Math.min(count / 3, vocab.length); i++) {
     const word = vocab[i]
     
     // 获取结构相似的音标作为干扰项
@@ -1046,7 +1137,30 @@ const generatePhonicsQuestions = (count, isChallenge = false) => {
       explanation: {
         title: "音标识别",
         content: `${word.english} → ${word.phonetic}`,
-        detail: `单词：${word.english}\n音标：${word.phonetic}\n中文：${word.chinese}`
+        detail: generateExplanation(word)
+      }
+    })
+  }
+  
+  // 根据音标拼写单词 - 文本输入模式
+  for (let i = 0; i < Math.min(count / 3, vocab.length); i++) {
+    const word = vocab[i]
+    
+    // 只选择长度≤8的单词（太长的不适合拼写）
+    if (word.english.length > 8) continue
+    
+    questions.push({
+      id: `phonics_spelling_${word.id}`,
+      type: 'fillBlank',
+      question: "根据音标写出单词：",
+      phonetic: word.phonetic,
+      chineseHint: word.chinese,
+      answer: word.english.toLowerCase(),
+      hint: word.english.slice(0, 2) + '_'.repeat(Math.max(0, word.english.length - 2)),
+      explanation: {
+        title: "音标拼写",
+        content: `${word.phonetic} → ${word.english}`,
+        detail: generateExplanation(word)
       }
     })
   }
