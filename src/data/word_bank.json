@@ -427,21 +427,21 @@
     {"word": "Whose", "usage": "询问所属", "example": "Whose book is this?", "chinese": "谁的"}
   ],
   "sentences": [
-    {"sentence": "The bird sings.", "type": "SV", "chinese": "鸟儿唱歌。"},
-    {"sentence": "The sun rises.", "type": "SV", "chinese": "太阳升起。"},
-    {"sentence": "The baby cries.", "type": "SV", "chinese": "婴儿哭泣。"},
-    {"sentence": "The dog runs.", "type": "SV", "chinese": "狗跑步。"},
-    {"sentence": "The cat sleeps.", "type": "SV", "chinese": "猫睡觉。"},
-    {"sentence": "She is happy.", "type": "SVC", "chinese": "她很开心。"},
-    {"sentence": "He is a doctor.", "type": "SVC", "chinese": "他是医生。"},
-    {"sentence": "The flower is beautiful.", "type": "SVC", "chinese": "花很美。"},
-    {"sentence": "The food tastes good.", "type": "SVC", "chinese": "食物很好吃。"},
-    {"sentence": "I am a student.", "type": "SVC", "chinese": "我是学生。"},
-    {"sentence": "She reads books.", "type": "SVO", "chinese": "她读书。"},
-    {"sentence": "He plays basketball.", "type": "SVO", "chinese": "他打篮球。"},
-    {"sentence": "They eat apples.", "type": "SVO", "chinese": "他们吃苹果。"},
-    {"sentence": "I love music.", "type": "SVO", "chinese": "我喜欢音乐。"},
-    {"sentence": "We watch TV.", "type": "SVO", "chinese": "我们看电视。"}
+    {"sentence": "The bird sings.", "type": "SV", "chinese": "鸟儿唱歌。", "analysis": {"S": "The bird (鸟儿)", "V": "sings (唱歌)"}},
+    {"sentence": "The sun rises.", "type": "SV", "chinese": "太阳升起。", "analysis": {"S": "The sun (太阳)", "V": "rises (升起)"}},
+    {"sentence": "The baby cries.", "type": "SV", "chinese": "婴儿哭泣。", "analysis": {"S": "The baby (婴儿)", "V": "cries (哭泣)"}},
+    {"sentence": "The dog runs.", "type": "SV", "chinese": "狗跑步。", "analysis": {"S": "The dog (狗)", "V": "runs (跑步)"}},
+    {"sentence": "The cat sleeps.", "type": "SV", "chinese": "猫睡觉。", "analysis": {"S": "The cat (猫)", "V": "sleeps (睡觉)"}},
+    {"sentence": "She is happy.", "type": "SVC", "chinese": "她很开心。", "analysis": {"S": "She (她)", "V": "is (是)", "C": "happy (开心的)"}},
+    {"sentence": "He is a doctor.", "type": "SVC", "chinese": "他是医生。", "analysis": {"S": "He (他)", "V": "is (是)", "C": "a doctor (一名医生)"}},
+    {"sentence": "The flower is beautiful.", "type": "SVC", "chinese": "花很美。", "analysis": {"S": "The flower (花)", "V": "is (是)", "C": "beautiful (美丽的)"}},
+    {"sentence": "The food tastes good.", "type": "SVC", "chinese": "食物很好吃。", "analysis": {"S": "The food (食物)", "V": "tastes (尝起来)", "C": "good (好的)"}},
+    {"sentence": "I am a student.", "type": "SVC", "chinese": "我是学生。", "analysis": {"S": "I (我)", "V": "am (是)", "C": "a student (一名学生)"}},
+    {"sentence": "She reads books.", "type": "SVO", "chinese": "她读书。", "analysis": {"S": "She (她)", "V": "reads (读)", "O": "books (书)"}},
+    {"sentence": "He plays basketball.", "type": "SVO", "chinese": "他打篮球。", "analysis": {"S": "He (他)", "V": "plays (打)", "O": "basketball (篮球)"}},
+    {"sentence": "They eat apples.", "type": "SVO", "chinese": "他们吃苹果。", "analysis": {"S": "They (他们)", "V": "eat (吃)", "O": "apples (苹果)"}},
+    {"sentence": "I love music.", "type": "SVO", "chinese": "我喜欢音乐。", "analysis": {"S": "I (我)", "V": "love (喜欢)", "O": "music (音乐)"}},
+    {"sentence": "We watch TV.", "type": "SVO", "chinese": "我们看电视。", "analysis": {"S": "We (我们)", "V": "watch (看)", "O": "TV (电视)"}}
   ],
   "rules": {
     "plural": {

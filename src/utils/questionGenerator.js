@@ -16,27 +16,60 @@ const shuffleArray = (array) => {
   return arr
 }
 
-// 根据规则生成相近选项（名词复数）
-const getSimilarPluralOptions = (correctPlural, rule) => {
-  const similarGroups = extendedBank.similarGroups.pluralEndings
+// 基于单数形式生成相似的复数变体选项
+const getSimilarPluralOptions = (correctPlural, rule, singular = '') => {
   const options = [correctPlural]
   
-  // 从同规则组中选择干扰项
-  const sameRuleOptions = similarGroups[rule] || similarGroups.s
-  const otherOptions = sameRuleOptions.filter(p => p !== correctPlural)
-  
-  // 添加同规则的选项
-  if (otherOptions.length >= 2) {
-    options.push(...shuffleArray(otherOptions).slice(0, 2))
+  // 如果有单数形式，基于它生成变体
+  if (singular) {
+    const baseWord = singular.toLowerCase()
+    const possibleEndings = []
+    
+    // 生成各种可能的复数变体
+    possibleEndings.push(baseWord + 's')        // 直接加s: field → fields
+    possibleEndings.push(baseWord + 'es')       // 加es: field → fieldes
+    possibleEndings.push(baseWord + 'ies')      // 加ies (错误形式): field → fieldies
+    
+    // 如果以y结尾，生成ies变体
+    if (baseWord.endsWith('y')) {
+      possibleEndings.push(baseWord.slice(0, -1) + 'ies')  // baby → babies
+      possibleEndings.push(baseWord + 's')                  // baby → babys (错误)
+    }
+    
+    // 如果以f/fe结尾，生成ves变体
+    if (baseWord.endsWith('f')) {
+      possibleEndings.push(baseWord.slice(0, -1) + 'ves')  // leaf → leaves
+      possibleEndings.push(baseWord + 's')                  // leaf → leafs (错误)
+    }
+    if (baseWord.endsWith('fe')) {
+      possibleEndings.push(baseWord.slice(0, -2) + 'ves')  // knife → knives
+      possibleEndings.push(baseWord + 's')                  // knife → knifes (错误)
+    }
+    
+    // 如果以s, x, ch, sh结尾，生成es变体
+    if (baseWord.endsWith('s') || baseWord.endsWith('x') || 
+        baseWord.endsWith('ch') || baseWord.endsWith('sh')) {
+      possibleEndings.push(baseWord + 'es')
+      possibleEndings.push(baseWord + 's')  // 错误形式
+    }
+    
+    // 添加不在正确答案中的变体作为干扰项
+    for (const ending of possibleEndings) {
+      if (ending !== correctPlural && !options.includes(ending) && options.length < 4) {
+        options.push(ending)
+      }
+    }
   }
   
-  // 添加不同规则的选项使选项更有挑战性
-  const allRules = Object.keys(similarGroups)
-  for (const r of shuffleArray(allRules)) {
-    if (r !== rule && options.length < 4) {
-      const ruleOptions = similarGroups[r].filter(p => !options.includes(p))
-      if (ruleOptions.length > 0) {
-        options.push(ruleOptions[0])
+  // 如果变体不够4个，从同规则的其他单词中补充
+  if (options.length < 4) {
+    const similarGroups = extendedBank.similarGroups.pluralEndings
+    const sameRuleOptions = similarGroups[rule] || similarGroups.s || []
+    const otherOptions = sameRuleOptions.filter(p => p !== correctPlural && !options.includes(p))
+    
+    for (const opt of shuffleArray(otherOptions)) {
+      if (options.length < 4) {
+        options.push(opt)
       }
     }
   }
@@ -420,8 +453,8 @@ const generatePluralQuestions = (count, isChallenge = false) => {
         }
       })
     } else {
-      // 使用相近选项
-      const options = getSimilarPluralOptions(noun.plural, noun.rule)
+      // 使用相近选项 - 传入singular用于生成变体
+      const options = getSimilarPluralOptions(noun.plural, noun.rule, noun.singular)
       
       questions.push({
         id: `plural_${noun.id}`,
@@ -531,6 +564,201 @@ const generatePronounQuestions = (count, isChallenge = false) => {
   return shuffleArray(result).slice(0, count)
 }
 
+// 句型结构映射（英文→中文）
+const sentencePatternMap = {
+  "SV": "SV (主谓)",
+  "SVC": "SVC (主系表)",
+  "SVO": "SVO (主谓宾)",
+  "SVOO": "SVOO (主谓双宾)"
+}
+
+// 获取句型的显示名称
+const getPatternDisplayName = (pattern) => {
+  return sentencePatternMap[pattern] || pattern
+}
+
+// 自动解析句子成分
+const autoAnalyzeSentence = (sentence, pattern, chinese) => {
+  // 移除句末标点
+  const cleanSentence = sentence.replace(/[.!?。！？]$/, '').trim()
+  const words = cleanSentence.split(' ')
+  
+  let analysis = {}
+  
+  // 常见系动词
+  const linkingVerbs = ['is', 'am', 'are', 'was', 'were', 'be', 'been', 'being', 
+                        'seems', 'seem', 'looks', 'look', 'tastes', 'taste', 
+                        'smells', 'smell', 'sounds', 'sound', 'feels', 'feel',
+                        'becomes', 'become', 'became', 'turns', 'turn', 'turned',
+                        'gets', 'get', 'got', 'grows', 'grow', 'grew', 'remains', 'remain']
+  
+  if (pattern === 'SV') {
+    // 主谓结构：主语 + 谓语
+    const verbIndex = words.length - 1
+    const subject = words.slice(0, verbIndex).join(' ')
+    const verb = words[verbIndex]
+    analysis.S = subject
+    analysis.V = verb
+  } else if (pattern === 'SVC') {
+    // 主系表结构：主语 + 系动词 + 表语
+    let verbIndex = words.findIndex(w => linkingVerbs.includes(w.toLowerCase()))
+    if (verbIndex === -1) verbIndex = 1
+    
+    const subject = words.slice(0, verbIndex).join(' ')
+    const verb = words[verbIndex]
+    const complement = words.slice(verbIndex + 1).join(' ')
+    
+    analysis.S = subject
+    analysis.V = verb
+    analysis.C = complement
+  } else if (pattern === 'SVO') {
+    // 主谓宾结构：主语 + 谓语 + 宾语
+    // 假设第一个词是主语，第二个词是谓语，其余是宾语
+    let verbIndex = 1
+    // 如果主语是多个词（如 The cat），找谓语位置
+    if (words[0].toLowerCase() === 'the' || words[0].toLowerCase() === 'a' || words[0].toLowerCase() === 'an') {
+      verbIndex = 2
+    }
+    
+    const subject = words.slice(0, verbIndex).join(' ')
+    const verb = words[verbIndex]
+    const object = words.slice(verbIndex + 1).join(' ')
+    
+    analysis.S = subject
+    analysis.V = verb
+    analysis.O = object
+  }
+  
+  return analysis
+}
+
+// 常用词汇翻译映射
+const wordTranslations = {
+  // 代词
+  'I': '我', 'you': '你', 'he': '他', 'she': '她', 'it': '它', 'we': '我们', 'they': '他们',
+  'The': '这个', 'A': '一个', 'An': '一个',
+  // 常见名词
+  'bird': '鸟', 'sun': '太阳', 'baby': '婴儿', 'dog': '狗', 'cat': '猫', 'flower': '花',
+  'food': '食物', 'cake': '蛋糕', 'soup': '汤', 'sky': '天空', 'water': '水',
+  'teacher': '老师', 'student': '学生', 'doctor': '医生', 'friends': '朋友',
+  'books': '书', 'music': '音乐', 'football': '足球', 'basketball': '篮球',
+  'apples': '苹果', 'movies': '电影', 'letters': '信', 'pictures': '画',
+  'English': '英语', 'mice': '老鼠', 'TV': '电视',
+  // 常见动词
+  'is': '是', 'am': '是', 'are': '是', 'was': '是', 'were': '是',
+  'sings': '唱歌', 'rises': '升起', 'cries': '哭泣', 'runs': '跑', 'sleeps': '睡觉',
+  'smiles': '微笑', 'passes': '流逝', 'flows': '流动', 'fall': '落下', 'shine': '闪耀',
+  'bark': '叫', 'swim': '游泳', 'fly': '飞',
+  'tastes': '尝起来', 'looks': '看起来', 'smells': '闻起来', 'sounds': '听起来',
+  'seems': '似乎', 'becomes': '成为', 'became': '成为', 'turned': '变成',
+  'read': '读', 'reads': '读', 'love': '爱', 'loves': '爱',
+  'play': '玩', 'plays': '玩', 'eat': '吃', 'eats': '吃',
+  'watch': '看', 'watches': '看', 'write': '写', 'writes': '写',
+  'drink': '喝', 'drinks': '喝', 'catch': '抓', 'catches': '抓',
+  'learn': '学习', 'learns': '学习', 'draw': '画', 'draws': '画',
+  // 常见形容词
+  'happy': '开心的', 'beautiful': '美丽的', 'good': '好的', 'nice': '好的',
+  'sweet': '甜的', 'tired': '累的', 'hot': '热的', 'dark': '暗的', 'honest': '诚实的'
+}
+
+// 翻译单词或短语
+const translateWord = (word) => {
+  if (!word) return ''
+  
+  // 先检查完整短语
+  const lowerWord = word.toLowerCase()
+  if (wordTranslations[word]) return wordTranslations[word]
+  if (wordTranslations[lowerWord]) return wordTranslations[lowerWord]
+  
+  // 尝试翻译短语中的每个词
+  const words = word.split(' ')
+  if (words.length > 1) {
+    const translated = words.map(w => {
+      const t = wordTranslations[w] || wordTranslations[w.toLowerCase()]
+      return t || ''
+    }).filter(t => t).join('')
+    if (translated) return translated
+  }
+  
+  // 检查单词（去掉冠词）
+  const withoutArticle = word.replace(/^(The|A|An)\s+/i, '')
+  if (wordTranslations[withoutArticle]) return wordTranslations[withoutArticle]
+  if (wordTranslations[withoutArticle.toLowerCase()]) return wordTranslations[withoutArticle.toLowerCase()]
+  
+  return ''
+}
+
+// 格式化成分显示（带中文翻译）
+const formatComponent = (english, existingTranslation) => {
+  if (!english) return ''
+  
+  // 如果已有翻译（来自预定义数据），直接使用
+  if (existingTranslation && existingTranslation.includes('(')) {
+    return existingTranslation
+  }
+  
+  // 否则尝试自动翻译
+  const chinese = translateWord(english)
+  if (chinese) {
+    return `${english} (${chinese})`
+  }
+  return english
+}
+
+// 生成句子成分分析文本
+const generateSentenceAnalysis = (s, pattern) => {
+  let analysis = s.analysis
+  
+  // 如果没有分析数据，自动生成
+  if (!analysis) {
+    analysis = autoAnalyzeSentence(s.sentence, pattern, s.chinese)
+  }
+  
+  // 检查是否已有中文翻译
+  const hasTranslation = analysis.S && analysis.S.includes('(')
+  
+  let analysisText = ""
+  
+  if (pattern === 'SV') {
+    // 主谓结构
+    analysisText += `【句子成分分析】\n\n`
+    analysisText += `S 主语：句子的主体 → ${formatComponent(analysis.S)}\n`
+    analysisText += `V 谓语动词：表示主语的动作或状态 → ${formatComponent(analysis.V)}\n\n`
+    analysisText += `结构 = S (主语) + V (谓语动词)`
+  } else if (pattern === 'SVC') {
+    // 主系表结构
+    analysisText += `【句子成分分析】\n\n`
+    analysisText += `S 主语：句子的主体 → ${formatComponent(analysis.S)}\n`
+    analysisText += `V 谓语动词 (系动词)：连接主语和后面的成分 → ${formatComponent(analysis.V)}\n`
+    analysisText += `C 补足语 (表语)：由形容词、名词或介词短语充当，位于系动词之后 → ${formatComponent(analysis.C)}\n\n`
+    analysisText += `结构 = S (主语) + V (系动词) + C (表语/主语补足语)`
+  } else if (pattern === 'SVO') {
+    // 主谓宾结构
+    analysisText += `【句子成分分析】\n\n`
+    analysisText += `S 主语：句子的主体 → ${formatComponent(analysis.S)}\n`
+    analysisText += `V 谓语动词：表示主语的动作 → ${formatComponent(analysis.V)}\n`
+    analysisText += `O 宾语：动作的承受者或对象 → ${formatComponent(analysis.O)}\n\n`
+    analysisText += `结构 = S (主语) + V (谓语动词) + O (宾语)`
+  } else if (pattern === 'SVOO') {
+    // 主谓双宾结构
+    analysisText += `【句子成分分析】\n\n`
+    analysisText += `S 主语：句子的主体 → ${formatComponent(analysis.S)}\n`
+    analysisText += `V 谓语动词：表示主语的动作 → ${formatComponent(analysis.V)}\n`
+    analysisText += `O1 间接宾语：动作的接受者 → ${formatComponent(analysis.O1) || '(人)'}\n`
+    analysisText += `O2 直接宾语：动作的对象 → ${formatComponent(analysis.O2) || '(物)'}\n\n`
+    analysisText += `结构 = S (主语) + V (谓语动词) + O1 (间接宾语) + O2 (直接宾语)`
+  } else {
+    // 默认格式
+    analysisText += `【句子成分分析】\n\n`
+    if (analysis.S) analysisText += `S 主语：${formatComponent(analysis.S)}\n`
+    if (analysis.V) analysisText += `V 谓语：${formatComponent(analysis.V)}\n`
+    if (analysis.C) analysisText += `C 表语：${formatComponent(analysis.C)}\n`
+    if (analysis.O) analysisText += `O 宾语：${formatComponent(analysis.O)}\n`
+  }
+  
+  return analysisText
+}
+
 // 生成句型结构题目
 const generateSentenceQuestions = (count, isChallenge = false) => {
   const questions = []
@@ -540,6 +768,8 @@ const generateSentenceQuestions = (count, isChallenge = false) => {
   for (let i = 0; i < sentences.length; i++) {
     const s = sentences[i]
     const pattern = s.type || s.pattern
+    const patternDisplay = getPatternDisplayName(pattern)
+    const analysisText = generateSentenceAnalysis(s, pattern)
     
     if (isChallenge) {
       questions.push({
@@ -550,23 +780,24 @@ const generateSentenceQuestions = (count, isChallenge = false) => {
         hint: pattern[0] + '_' + (pattern.length > 2 ? '_' : ''),
         explanation: {
           title: "句型分析",
-          content: `${s.sentence} → ${pattern}`,
-          detail: `句子：${s.sentence}\n中文：${s.chinese}\n\n句型：${pattern}`
+          content: `${s.sentence} → ${patternDisplay}，${s.chinese}`,
+          detail: `${analysisText}`
         }
       })
     } else {
-      const options = shuffleArray([...types, "SVOO"])
+      // 使用带中文的选项
+      const optionsWithChinese = shuffleArray([...types, "SVOO"].map(t => getPatternDisplayName(t)))
       questions.push({
         id: `sentence_${i}`,
         type: 'choice',
         question: `"${s.sentence}" 的句型结构是?`,
-        options: options,
-        answer: options.indexOf(pattern),
-        correctAnswer: pattern,
+        options: optionsWithChinese,
+        answer: optionsWithChinese.indexOf(patternDisplay),
+        correctAnswer: patternDisplay,
         explanation: {
           title: "句型分析",
-          content: `${s.sentence} → ${pattern}`,
-          detail: `句子：${s.sentence}\n中文：${s.chinese}\n\n句型：${pattern}\n• S = 主语 (Subject)\n• V = 谓语动词 (Verb)\n• C = 补语/表语 (Complement)\n• O = 宾语 (Object)`
+          content: `${s.sentence} → ${patternDisplay}，${s.chinese}`,
+          detail: `${analysisText}`
         }
       })
     }
@@ -675,19 +906,112 @@ const generateQuestionWordQuestions = (count, isChallenge = false) => {
   return shuffleArray(result).slice(0, count)
 }
 
+// 获取相似发音的单词（基于音标结构相似性）
+const getSimilarPhoneticWords = (targetWord, allVocab, count = 3) => {
+  const targetPhonetic = targetWord.phonetic
+  const targetLength = targetWord.english.length
+  
+  // 计算音标相似度
+  const getSimilarity = (phonetic1, phonetic2) => {
+    // 提取主要元音
+    const vowelPattern = /[aeiouæɑɒʌəɪʊeɛɔ]/gi
+    const vowels1 = (phonetic1.match(vowelPattern) || []).join('')
+    const vowels2 = (phonetic2.match(vowelPattern) || []).join('')
+    
+    // 比较音节数（通过元音数量估计）
+    const syllables1 = vowels1.length
+    const syllables2 = vowels2.length
+    
+    // 相似度计算
+    let score = 0
+    if (syllables1 === syllables2) score += 3
+    if (Math.abs(syllables1 - syllables2) === 1) score += 1
+    
+    // 首音相似
+    if (phonetic1[1] === phonetic2[1]) score += 2
+    
+    // 尾音相似
+    const end1 = phonetic1.slice(-3, -1)
+    const end2 = phonetic2.slice(-3, -1)
+    if (end1 === end2) score += 2
+    
+    return score
+  }
+  
+  // 按相似度排序
+  const candidates = allVocab
+    .filter(v => v.id !== targetWord.id)
+    .map(v => ({
+      word: v,
+      similarity: getSimilarity(targetPhonetic, v.phonetic),
+      lengthDiff: Math.abs(v.english.length - targetLength)
+    }))
+    .sort((a, b) => {
+      // 优先选择相似度高的，其次选择长度相近的
+      if (b.similarity !== a.similarity) return b.similarity - a.similarity
+      return a.lengthDiff - b.lengthDiff
+    })
+  
+  return candidates.slice(0, count).map(c => c.word)
+}
+
+// 获取相似音标（基于结构相似性）
+const getSimilarPhonetics = (targetPhonetic, allVocab, excludeWord, count = 3) => {
+  const getSimilarity = (p1, p2) => {
+    // 音标长度相似
+    let score = 0
+    if (Math.abs(p1.length - p2.length) <= 2) score += 2
+    
+    // 首音相同
+    if (p1.slice(1, 3) === p2.slice(1, 3)) score += 3
+    
+    // 尾音相同
+    if (p1.slice(-3, -1) === p2.slice(-3, -1)) score += 3
+    
+    // 包含相同元音
+    const vowelPattern = /[aeiouæɑɒʌəɪʊeɛɔ]/gi
+    const vowels1 = new Set(p1.match(vowelPattern) || [])
+    const vowels2 = new Set(p2.match(vowelPattern) || [])
+    const commonVowels = [...vowels1].filter(v => vowels2.has(v)).length
+    score += commonVowels
+    
+    return score
+  }
+  
+  const candidates = allVocab
+    .filter(v => v.english !== excludeWord && v.phonetic !== targetPhonetic)
+    .map(v => ({
+      phonetic: v.phonetic,
+      similarity: getSimilarity(targetPhonetic, v.phonetic)
+    }))
+    .sort((a, b) => b.similarity - a.similarity)
+  
+  // 去重
+  const seen = new Set([targetPhonetic])
+  const result = []
+  for (const c of candidates) {
+    if (!seen.has(c.phonetic) && result.length < count) {
+      seen.add(c.phonetic)
+      result.push(c.phonetic)
+    }
+  }
+  return result
+}
+
 // 生成音标题目（选择题模式，挑战模式不适用）
 const generatePhonicsQuestions = (count, isChallenge = false) => {
   const questions = []
   const vocab = shuffleArray([...wordBank.vocabulary])
-  const allPhonetics = wordBank.vocabulary.map(v => v.phonetic)
-  const allEnglish = wordBank.vocabulary.map(v => v.english)
-  
-  // 根据音标选单词
+  const allVocab = wordBank.vocabulary
+
+  // 根据音标选单词 - 使用相似发音的单词作为干扰项
   for (let i = 0; i < Math.min(count / 2, vocab.length); i++) {
     const word = vocab[i]
     
-    // 音标题目不支持填空挑战模式，始终使用选择题
-    const options = shuffleArray([word.english, ...shuffleArray(allEnglish.filter(e => e !== word.english)).slice(0, 3)])
+    // 获取发音相似的单词作为干扰项
+    const similarWords = getSimilarPhoneticWords(word, allVocab, 3)
+    const distractors = similarWords.map(w => w.english)
+    const options = shuffleArray([word.english, ...distractors])
     
     questions.push({
       id: `phonics_word_${word.id}`,
@@ -704,10 +1028,13 @@ const generatePhonicsQuestions = (count, isChallenge = false) => {
     })
   }
   
-  // 根据单词选音标
+  // 根据单词选音标 - 使用相似音标作为干扰项
   for (let i = 0; i < Math.min(count / 2, vocab.length); i++) {
     const word = vocab[i]
-    const options = shuffleArray([word.phonetic, ...shuffleArray(allPhonetics.filter(p => p !== word.phonetic)).slice(0, 3)])
+    
+    // 获取结构相似的音标作为干扰项
+    const similarPhonetics = getSimilarPhonetics(word.phonetic, allVocab, word.english, 3)
+    const options = shuffleArray([word.phonetic, ...similarPhonetics])
     
     questions.push({
       id: `phonics_sound_${word.id}`,

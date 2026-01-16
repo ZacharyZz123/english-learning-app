@@ -39,11 +39,11 @@
         <div class="answers-section">
           <div class="your-answer wrong">
             <span class="label">你的答案：</span>
-            <span class="value">{{ question.options[question.userAnswer] }}</span>
+            <span class="value">{{ getAnswerText(question, 'user') }}</span>
           </div>
           <div class="correct-answer">
             <span class="label">正确答案：</span>
-            <span class="value">{{ question.options[question.answer] }}</span>
+            <span class="value">{{ getAnswerText(question, 'correct') }}</span>
           </div>
         </div>
 
@@ -73,7 +73,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuizStore } from '../stores/quiz'
 import learningData from '../data/learning_data.json'
@@ -103,6 +103,26 @@ const formatTime = (timestamp) => {
   if (diff < 604800000) return `${Math.floor(diff / 86400000)}天前`
   
   return `${date.getMonth() + 1}/${date.getDate()}`
+}
+
+const getAnswerText = (question, type) => {
+  if (!question) return '未知'
+  
+  if (type === 'user') {
+    // User answer
+    if (question.userAnswerText) return question.userAnswerText
+    if (question.options && typeof question.userAnswer === 'number') {
+      return question.options[question.userAnswer] || '未知'
+    }
+    return question.userAnswer || '未知'
+  } else {
+    // Correct answer
+    if (question.correctAnswerText) return question.correctAnswerText
+    if (question.options && typeof question.answer === 'number') {
+      return question.options[question.answer] || '未知'
+    }
+    return question.answer || '未知'
+  }
 }
 
 const toggleExplanation = (id) => {
