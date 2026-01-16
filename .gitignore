@@ -12,7 +12,8 @@ node_modules
 .npm
 
 # Build output
-dist
+# dist 目录已移除忽略，用于 Gitee Pages 部署
+# dist
 dist-ssr
 *.local
 
