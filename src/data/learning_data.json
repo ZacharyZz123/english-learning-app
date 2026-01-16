@@ -1,0 +1,895 @@
+{
+  "units": {
+    "starter": {
+      "name": "Starter",
+      "notes": [
+        {
+          "page": 3,
+          "english": "I can answer all your questions. Try me.",
+          "chinese": "我可以回答你所有的问题。来试试看吧。",
+          "note": "当一个人对自己的某项能力或技能极具信心时，会说\"Try me.\"来向别人挑战或展示自己的实力。"
+        },
+        {
+          "page": 3,
+          "english": "Big E, little e, she sells seashells to me!",
+          "chinese": "大写E，小写e，她把海贝壳卖给我！",
+          "note": "此处she和me中的e发字母e的长音(如he)，sells和seashells中的e发短音(如egg)。"
+        },
+        {
+          "page": 4,
+          "english": "This is your secret to English learning, isn't it?",
+          "chinese": "这就是你学英语的秘诀，对吗？",
+          "note": "这句话最后的isn't it是附加疑问句，用以向对方验证自己的陈述或者判断。"
+        },
+        {
+          "page": 6,
+          "english": "Hi, pals!",
+          "chinese": "伙伴们好啊！",
+          "note": "这通常是用于较为亲密的人(close friends, classmates or teammates)之间的打招呼用语。类似的表达还有\"Hey friends!\" \"Hello folks!\" \"Dear all,\"等。"
+        }
+      ]
+    },
+    "unit1": {
+      "name": "Unit 1 - School",
+      "notes": [
+        {
+          "page": 16,
+          "english": "We eat our work.",
+          "chinese": "我们吃掉自己的作品。",
+          "note": "work除了用作动词，表示\"做体力（或脑力）工作；劳动；干活\"的意思之外，还可以用作名词，表示\"工作成果；产品；作品\"。此句中的work是名词，意为\"作品\"。"
+        }
+      ]
+    },
+    "unit2": {
+      "name": "Unit 2 - Family",
+      "notes": []
+    },
+    "unit3": {
+      "name": "Unit 3 - Food",
+      "notes": []
+    },
+    "unit4": {
+      "name": "Unit 4 - Sports",
+      "notes": []
+    },
+    "unit5": {
+      "name": "Unit 5 - Animals",
+      "notes": [
+        {
+          "page": 70,
+          "english": "Do pigs make good mothers?",
+          "chinese": "猪能成为好妈妈吗？",
+          "note": "这里的make意为\"成为；适合\"，后面可以跟somebody或something。如：The room will make a nice office. 这个房间适合做办公室。"
+        },
+        {
+          "page": 72,
+          "english": "Do not pet an animal when it is sleeping, eating or caring for its young.",
+          "chinese": "当动物在睡觉、进食或者照顾幼崽的时候，不要去抚摸它。",
+          "note": "这是一则安全提示，告知我们在这三种情况下不要随意去抚摸动物，以免激怒它们而受到攻击。pet在这里作动词，意为\"抚摸\"；young在这里作名词，意为\"幼崽\"。"
+        }
+      ]
+    },
+    "unit6": {
+      "name": "Unit 6 - Travel",
+      "notes": [
+        {
+          "page": 84,
+          "english": "Come and feel the history in Beijing. View details.",
+          "chinese": "来北京感受历史吧。查看详情。",
+          "note": "为吸引游客，旅游网站的页面通常会用简单、直观的表达介绍景点最具吸引力的特征。"
+        },
+        {
+          "page": 86,
+          "english": "Yao, could you please look at the ways of going to Chengdu?",
+          "chinese": "遥，你能查一查去成都的（交通）方式吗？",
+          "note": "\"Could you please ...?\"在英语口语中通常用于表达较为委婉和礼貌的请求，和\"Would you please ...?\"意思接近。"
+        }
+      ]
+    }
+  },
+  "vocabulary": {
+    "unit1": [
+      {"word": "life", "phonetic": "/laɪf/", "chinese": "生活；生命", "unit": "U1"},
+      {"word": "break", "phonetic": "/breɪk/", "chinese": "课间休息；间歇；休息", "unit": "U1"},
+      {"word": "ICT", "phonetic": "", "chinese": "信息通信技术（课程）", "unit": "U1"},
+      {"word": "geography", "phonetic": "/dʒiˈɒɡrəfi/", "chinese": "地理", "unit": "U1"},
+      {"word": "history", "phonetic": "/ˈhɪstri/", "chinese": "历史", "unit": "U1"},
+      {"word": "instruction", "phonetic": "/ɪnˈstrʌkʃn/", "chinese": "指示；命令", "unit": "U1"},
+      {"word": "experiment", "phonetic": "/ɪkˈsperɪmənt/", "chinese": "实验；试验", "unit": "U1"},
+      {"word": "activity", "phonetic": "/ækˈtɪvəti/", "chinese": "活动", "unit": "U1"},
+      {"word": "club", "phonetic": "/klʌb/", "chinese": "社团", "unit": "U1"},
+      {"word": "calligraphy", "phonetic": "/kəˈlɪɡrəfi/", "chinese": "书法", "unit": "U1"},
+      {"word": "join", "phonetic": "/dʒɔɪn/", "chinese": "加入", "unit": "U1"},
+      {"word": "technology", "phonetic": "/tekˈnɒlədʒi/", "chinese": "科技", "unit": "U1"},
+      {"word": "everyone", "phonetic": "/ˈevriwʌn/", "chinese": "每个人", "unit": "U1"},
+      {"word": "lab", "phonetic": "/læb/", "chinese": "实验室", "unit": "U1"},
+      {"word": "field", "phonetic": "/fiːld/", "chinese": "场地", "unit": "U1"},
+      {"word": "grade", "phonetic": "/ɡreɪd/", "chinese": "年级", "unit": "U1"},
+      {"word": "excuse", "phonetic": "/ɪkˈskjuːz/", "chinese": "原谅；宽恕", "unit": "U1"},
+      {"word": "project", "phonetic": "/ˈprɒdʒekt/", "chinese": "项目", "unit": "U1"},
+      {"word": "start", "phonetic": "/stɑːt/", "chinese": "开始（做某事）", "unit": "U1"},
+      {"word": "topic", "phonetic": "/ˈtɒpɪk/", "chinese": "话题；主题", "unit": "U1"},
+      {"word": "online", "phonetic": "/ɒnˈlaɪn/", "chinese": "在线的；联网的", "unit": "U1"},
+      {"word": "receive", "phonetic": "/rɪˈsiːv/", "chinese": "接到；收到", "unit": "U1"},
+      {"word": "reply", "phonetic": "/rɪˈplaɪ/", "chinese": "回答；答复", "unit": "U1"},
+      {"word": "group", "phonetic": "/ɡruːp/", "chinese": "组；群；批；类", "unit": "U1"},
+      {"word": "most", "phonetic": "/məʊst/", "chinese": "最", "unit": "U1"},
+      {"word": "end", "phonetic": "/end/", "chinese": "结束", "unit": "U1"},
+      {"word": "difference", "phonetic": "/ˈdɪfrəns/", "chinese": "差别；不同之处", "unit": "U1"},
+      {"word": "same", "phonetic": "/seɪm/", "chinese": "一样的", "unit": "U1"},
+      {"word": "during", "phonetic": "/ˈdjʊərɪŋ/", "chinese": "在……期间", "unit": "U1"},
+      {"word": "outside", "phonetic": "/aʊtˈsaɪd/", "chinese": "在外面", "unit": "U1"},
+      {"word": "noon", "phonetic": "/nuːn/", "chinese": "正午；中午", "unit": "U1"},
+      {"word": "connect", "phonetic": "/kəˈnekt/", "chinese": "连接", "unit": "U1"},
+      {"word": "comment", "phonetic": "/ˈkɒment/", "chinese": "议论；评论；解释；表达意见", "unit": "U1"}
+    ],
+    "unit2": [
+      {"word": "tie", "phonetic": "/taɪ/", "chinese": "联系；关系；纽带", "unit": "U2"},
+      {"word": "relation", "phonetic": "/rɪˈleɪʃn/", "chinese": "关系；联系", "unit": "U2"},
+      {"word": "introduce", "phonetic": "/ɪntrəˈdjuːs/", "chinese": "介绍", "unit": "U2"},
+      {"word": "classmate", "phonetic": "/ˈklɑːsmeɪt/", "chinese": "同班同学", "unit": "U2"},
+      {"word": "relative", "phonetic": "/ˈrelətɪv/", "chinese": "亲戚；亲属", "unit": "U2"},
+      {"word": "only", "phonetic": "/ˈəʊnli/", "chinese": "仅有的；唯一的", "unit": "U2"},
+      {"word": "twin", "phonetic": "/twɪn/", "chinese": "双胞胎之一", "unit": "U2"},
+      {"word": "husband", "phonetic": "/ˈhʌzbənd/", "chinese": "丈夫", "unit": "U2"},
+      {"word": "wife", "phonetic": "/waɪf/", "chinese": "妻子", "unit": "U2"},
+      {"word": "son", "phonetic": "/sʌn/", "chinese": "儿子", "unit": "U2"},
+      {"word": "daughter", "phonetic": "/ˈdɔːtə(r)/", "chinese": "女儿", "unit": "U2"},
+      {"word": "other", "phonetic": "/ˈʌðə(r)/", "chinese": "另外；其他", "unit": "U2"},
+      {"word": "member", "phonetic": "/ˈmembə(r)/", "chinese": "成员；分子", "unit": "U2"},
+      {"word": "add", "phonetic": "/æd/", "chinese": "添加；增加", "unit": "U2"},
+      {"word": "note", "phonetic": "/nəʊt/", "chinese": "笔记；记录；音符", "unit": "U2"},
+      {"word": "album", "phonetic": "/ˈælbəm/", "chinese": "相册；影集", "unit": "U2"},
+      {"word": "teach", "phonetic": "/tiːtʃ/", "chinese": "教（某人）；使（某人）明白或会做某事", "unit": "U2"},
+      {"word": "homework", "phonetic": "/ˈhəʊmwɜːk/", "chinese": "（学生的）家庭作业", "unit": "U2"},
+      {"word": "guitar", "phonetic": "/ɡɪˈtɑː(r)/", "chinese": "吉他", "unit": "U2"},
+      {"word": "elder", "phonetic": "/ˈeldə(r)/", "chinese": "年长的；年龄较大的", "unit": "U2"},
+      {"word": "sofa", "phonetic": "/ˈsəʊfə/", "chinese": "长沙发", "unit": "U2"},
+      {"word": "round", "phonetic": "/raʊnd/", "chinese": "圆形的", "unit": "U2"},
+      {"word": "dark", "phonetic": "/dɑːk/", "chinese": "乌黑的；深色的；黑暗的", "unit": "U2"},
+      {"word": "chess", "phonetic": "/tʃes/", "chinese": "国际象棋", "unit": "U2"},
+      {"word": "duty", "phonetic": "/ˈdjuːti/", "chinese": "责任；义务；本分", "unit": "U2"},
+      {"word": "born", "phonetic": "/bɔːn/", "chinese": "出生；出世", "unit": "U2"},
+      {"word": "weekend", "phonetic": "/wiːkˈend/", "chinese": "星期六和星期日；周末", "unit": "U2"},
+      {"word": "thing", "phonetic": "/θɪŋ/", "chinese": "事情；事件", "unit": "U2"},
+      {"word": "enough", "phonetic": "/ɪˈnʌf/", "chinese": "足够地；充分地", "unit": "U2"},
+      {"word": "dish", "phonetic": "/dɪʃ/", "chinese": "碟子；盘子；一道菜；菜肴", "unit": "U2"},
+      {"word": "usually", "phonetic": "/ˈjuːʒuəli/", "chinese": "通常地；经常地", "unit": "U2"},
+      {"word": "quick", "phonetic": "/kwɪk/", "chinese": "快的；迅速的", "unit": "U2"},
+      {"word": "together", "phonetic": "/təˈɡeðə(r)/", "chinese": "在一起；共同", "unit": "U2"},
+      {"word": "flat", "phonetic": "/flæt/", "chinese": "公寓；一套房间", "unit": "U2"},
+      {"word": "fun", "phonetic": "/fʌn/", "chinese": "乐趣；快乐", "unit": "U2"},
+      {"word": "celebration", "phonetic": "/selɪˈbreɪʃn/", "chinese": "庆典；庆祝活动", "unit": "U2"},
+      {"word": "prepare", "phonetic": "/prɪˈpeə(r)/", "chinese": "使做好准备；把……预备好", "unit": "U2"},
+      {"word": "decorate", "phonetic": "/ˈdekəreɪt/", "chinese": "装饰", "unit": "U2"},
+      {"word": "living room", "phonetic": "/ˈlɪvɪŋ ruːm/", "chinese": "客厅；起居室", "unit": "U2"},
+      {"word": "balloon", "phonetic": "/bəˈluːn/", "chinese": "气球", "unit": "U2"},
+      {"word": "set", "phonetic": "/set/", "chinese": "放置；摆放", "unit": "U2"},
+      {"word": "surprised", "phonetic": "/səˈpraɪzd/", "chinese": "惊讶的；感觉意外的", "unit": "U2"},
+      {"word": "super-excited", "phonetic": "/suːpə(r) ɪkˈsaɪtɪd/", "chinese": "超级激动的；格外兴奋的", "unit": "U2"},
+      {"word": "joy", "phonetic": "/dʒɔɪ/", "chinese": "高兴；愉快；喜悦", "unit": "U2"}
+    ],
+    "unit3": [
+      {"word": "something", "phonetic": "/ˈsʌmθɪŋ/", "chinese": "某事；某物", "unit": "U3"},
+      {"word": "beef", "phonetic": "/biːf/", "chinese": "牛肉", "unit": "U3"},
+      {"word": "tofu", "phonetic": "/ˈtəʊfuː/", "chinese": "豆腐", "unit": "U3"},
+      {"word": "pepper", "phonetic": "/ˈpepə(r)/", "chinese": "甜椒", "unit": "U3"},
+      {"word": "cabbage", "phonetic": "/ˈkæbɪdʒ/", "chinese": "卷心菜", "unit": "U3"},
+      {"word": "onion", "phonetic": "/ˈʌnjən/", "chinese": "洋葱", "unit": "U3"},
+      {"word": "carrot", "phonetic": "/ˈkærət/", "chinese": "胡萝卜", "unit": "U3"},
+      {"word": "watermelon", "phonetic": "/ˈwɔːtəmelən/", "chinese": "西瓜", "unit": "U3"},
+      {"word": "cucumber", "phonetic": "/ˈkjuːkʌmbə(r)/", "chinese": "黄瓜", "unit": "U3"},
+      {"word": "strawberry", "phonetic": "/ˈstrɔːbəri/", "chinese": "草莓", "unit": "U3"},
+      {"word": "pear", "phonetic": "/peə(r)/", "chinese": "梨", "unit": "U3"},
+      {"word": "yogurt", "phonetic": "/ˈjɒɡət/", "chinese": "酸奶；一份酸奶", "unit": "U3"},
+      {"word": "cheese", "phonetic": "/tʃiːz/", "chinese": "干酪；奶酪", "unit": "U3"},
+      {"word": "corn", "phonetic": "/kɔːn/", "chinese": "（小麦等）谷物；玉米", "unit": "U3"},
+      {"word": "butter", "phonetic": "/ˈbʌtə(r)/", "chinese": "黄油", "unit": "U3"},
+      {"word": "oil", "phonetic": "/ɔɪl/", "chinese": "食用油", "unit": "U3"},
+      {"word": "salt", "phonetic": "/sɔːlt/", "chinese": "盐；食盐", "unit": "U3"},
+      {"word": "bean", "phonetic": "/biːn/", "chinese": "豆；豆科植物", "unit": "U3"},
+      {"word": "product", "phonetic": "/ˈprɒdʌkt/", "chinese": "产品；制品", "unit": "U3"},
+      {"word": "grain", "phonetic": "/ɡreɪn/", "chinese": "谷物；谷粒", "unit": "U3"},
+      {"word": "rainbow", "phonetic": "/ˈreɪnbəʊ/", "chinese": "虹；彩虹", "unit": "U3"},
+      {"word": "balanced", "phonetic": "/ˈbælənst/", "chinese": "保持（或显示）平衡的", "unit": "U3"},
+      {"word": "diet", "phonetic": "/ˈdaɪət/", "chinese": "日常饮食；日常食物", "unit": "U3"},
+      {"word": "each", "phonetic": "/iːtʃ/", "chinese": "（两个或以上的人或物中）各自，各个，每个", "unit": "U3"},
+      {"word": "plenty", "phonetic": "/ˈplenti/", "chinese": "大量", "unit": "U3"},
+      {"word": "choice", "phonetic": "/tʃɔɪs/", "chinese": "选择；挑选；抉择", "unit": "U3"},
+      {"word": "list", "phonetic": "/lɪst/", "chinese": "一览表；清单", "unit": "U3"},
+      {"word": "few", "phonetic": "/fjuː/", "chinese": "不多；很少", "unit": "U3"},
+      {"word": "pleasure", "phonetic": "/ˈpleʒə(r)/", "chinese": "高兴；快乐；愉快", "unit": "U3"},
+      {"word": "ingredient", "phonetic": "/ɪnˈɡriːdiənt/", "chinese": "（尤指烹饪）材料；成分", "unit": "U3"},
+      {"word": "tasty", "phonetic": "/ˈteɪsti/", "chinese": "美味的；可口的", "unit": "U3"},
+      {"word": "need", "phonetic": "/niːd/", "chinese": "需要", "unit": "U3"},
+      {"word": "fridge", "phonetic": "/frɪdʒ/", "chinese": "冰箱", "unit": "U3"},
+      {"word": "surprise", "phonetic": "/səˈpraɪz/", "chinese": "意想不到（或突然）的事；使惊奇；使诧异；使感到意外", "unit": "U3"},
+      {"word": "blog", "phonetic": "/blɒɡ/", "chinese": "博客；网志", "unit": "U3"},
+      {"word": "as", "phonetic": "/æz; əz/", "chinese": "作为；当作", "unit": "U3"},
+      {"word": "soy sauce", "phonetic": "/sɔɪ ˈsɔːs/", "chinese": "酱油", "unit": "U3"},
+      {"word": "into", "phonetic": "/ˈɪntuː; ˈɪntə/", "chinese": "（表示状态的变化）；进入", "unit": "U3"},
+      {"word": "piece", "phonetic": "/piːs/", "chinese": "碎片；碎块", "unit": "U3"},
+      {"word": "fry", "phonetic": "/fraɪ/", "chinese": "油炒；油煎", "unit": "U3"},
+      {"word": "finally", "phonetic": "/ˈfaɪnəli/", "chinese": "最后", "unit": "U3"},
+      {"word": "boil", "phonetic": "/bɔɪl/", "chinese": "煮沸；烧开", "unit": "U3"},
+      {"word": "side", "phonetic": "/saɪd/", "chinese": "一边；侧面", "unit": "U3"},
+      {"word": "mutton", "phonetic": "/ˈmʌtn/", "chinese": "羊肉", "unit": "U3"},
+      {"word": "recipe", "phonetic": "/ˈresəpi/", "chinese": "食谱；烹饪法", "unit": "U3"},
+      {"word": "beat", "phonetic": "/biːt/", "chinese": "（用叉等）快速搅拌；打", "unit": "U3"},
+      {"word": "chopsticks", "phonetic": "/ˈtʃɒpstɪks/", "chinese": "筷子", "unit": "U3"},
+      {"word": "bowl", "phonetic": "/bəʊl/", "chinese": "碗", "unit": "U3"},
+      {"word": "menu", "phonetic": "/ˈmenjuː/", "chinese": "菜单", "unit": "U3"}
+    ],
+    "unit4": [
+      {"word": "date", "phonetic": "/deɪt/", "chinese": "日期；日子", "unit": "U4"},
+      {"word": "ground", "phonetic": "/ɡraʊnd/", "chinese": "（特定用途的）场地；地面", "unit": "U4"},
+      {"word": "gym", "phonetic": "/dʒɪm/", "chinese": "健身房；体育馆", "unit": "U4"},
+      {"word": "team", "phonetic": "/tiːm/", "chinese": "（游戏或运动的）队", "unit": "U4"},
+      {"word": "high", "phonetic": "/haɪ/", "chinese": "高的", "unit": "U4"},
+      {"word": "rope", "phonetic": "/rəʊp/", "chinese": "绳", "unit": "U4"},
+      {"word": "kick", "phonetic": "/kɪk/", "chinese": "踢", "unit": "U4"},
+      {"word": "rock", "phonetic": "/rɒk/", "chinese": "岩石", "unit": "U4"},
+      {"word": "climb", "phonetic": "/klaɪm/", "chinese": "攀登；爬", "unit": "U4"},
+      {"word": "kung fu", "phonetic": "/kʌŋ ˈfuː/", "chinese": "功夫（中国拳术）", "unit": "U4"},
+      {"word": "active", "phonetic": "/ˈæktɪv/", "chinese": "活跃的；充满活力的；积极的", "unit": "U4"},
+      {"word": "part", "phonetic": "/pɑːt/", "chinese": "部分", "unit": "U4"},
+      {"word": "baseball", "phonetic": "/ˈbeɪsbɔːl/", "chinese": "棒球运动", "unit": "U4"},
+      {"word": "volleyball", "phonetic": "/ˈvɒlibɔːl/", "chinese": "排球；排球运动", "unit": "U4"},
+      {"word": "badminton", "phonetic": "/ˈbædmɪntən/", "chinese": "羽毛球运动", "unit": "U4"},
+      {"word": "tennis", "phonetic": "/ˈtenɪs/", "chinese": "网球", "unit": "U4"},
+      {"word": "pull", "phonetic": "/pʊl/", "chinese": "拉；拔出", "unit": "U4"},
+      {"word": "jog", "phonetic": "/dʒɒɡ/", "chinese": "慢跑", "unit": "U4"},
+      {"word": "safety", "phonetic": "/ˈseɪfti/", "chinese": "安全；平安", "unit": "U4"},
+      {"word": "ankle", "phonetic": "/ˈæŋkl/", "chinese": "踝；踝关节", "unit": "U4"},
+      {"word": "match", "phonetic": "/mætʃ/", "chinese": "比赛", "unit": "U4"},
+      {"word": "matter", "phonetic": "/ˈmætə(r)/", "chinese": "问题；事情", "unit": "U4"},
+      {"word": "happen", "phonetic": "/ˈhæpən/", "chinese": "发生", "unit": "U4"},
+      {"word": "just", "phonetic": "/dʒʌst/", "chinese": "仅仅是；只是", "unit": "U4"},
+      {"word": "fall", "phonetic": "/fɔːl/", "chinese": "突然倒下；跌倒", "unit": "U4"},
+      {"word": "guess", "phonetic": "/ɡes/", "chinese": "猜测；估计", "unit": "U4"},
+      {"word": "knee", "phonetic": "/niː/", "chinese": "膝盖", "unit": "U4"},
+      {"word": "seem", "phonetic": "/siːm/", "chinese": "好像；似乎；看来", "unit": "U4"},
+      {"word": "problem", "phonetic": "/ˈprɒbləm/", "chinese": "棘手的问题；难题；困难", "unit": "U4"},
+      {"word": "score", "phonetic": "/skɔː(r)/", "chinese": "得（分）；进（球）", "unit": "U4"},
+      {"word": "goal", "phonetic": "/ɡəʊl/", "chinese": "进球得的分；球门；目标", "unit": "U4"},
+      {"word": "goalkeeper", "phonetic": "/ˈɡəʊlkiːpə(r)/", "chinese": "守门员", "unit": "U4"},
+      {"word": "hold", "phonetic": "/həʊld/", "chinese": "使……保持在某位置；拿着；抓住", "unit": "U4"},
+      {"word": "throw", "phonetic": "/θrəʊ/", "chinese": "投；抛；掷", "unit": "U4"},
+      {"word": "point", "phonetic": "/pɔɪnt/", "chinese": "得分；点", "unit": "U4"},
+      {"word": "control", "phonetic": "/kənˈtrəʊl/", "chinese": "控制；管理", "unit": "U4"},
+      {"word": "mind", "phonetic": "/maɪnd/", "chinese": "头脑；心智；当心；注意", "unit": "U4"},
+      {"word": "powerful", "phonetic": "/ˈpaʊəfl/", "chinese": "强有力的", "unit": "U4"},
+      {"word": "style", "phonetic": "/staɪl/", "chinese": "风格；样式", "unit": "U4"},
+      {"word": "moment", "phonetic": "/ˈməʊmənt/", "chinese": "片刻；瞬间", "unit": "U4"},
+      {"word": "report", "phonetic": "/rɪˈpɔːt/", "chinese": "汇报；报告；报道", "unit": "U4"},
+      {"word": "newspaper", "phonetic": "/ˈnjuːzpeɪpə(r)/", "chinese": "报纸", "unit": "U4"},
+      {"word": "court", "phonetic": "/kɔːt/", "chinese": "球场", "unit": "U4"},
+      {"word": "against", "phonetic": "/əˈɡenst/", "chinese": "与……对阵；与……相反；反对", "unit": "U4"},
+      {"word": "shoot", "phonetic": "/ʃuːt/", "chinese": "射门；投篮", "unit": "U4"},
+      {"word": "basket", "phonetic": "/ˈbɑːskɪt/", "chinese": "（篮球运动的）篮；筐", "unit": "U4"},
+      {"word": "tie", "phonetic": "/taɪ/", "chinese": "（比赛或竞争中）得分相同", "unit": "U4"},
+      {"word": "track", "phonetic": "/træk/", "chinese": "（赛跑、赛车等的）跑道", "unit": "U4"}
+    ],
+    "unit5": [
+      {"word": "amazing", "phonetic": "/əˈmeɪzɪŋ/", "chinese": "令人大为惊奇的；令人惊喜或惊叹的", "unit": "U5"},
+      {"word": "website", "phonetic": "/ˈwebsaɪt/", "chinese": "网站", "unit": "U5"},
+      {"word": "feed", "phonetic": "/fiːd/", "chinese": "给（人或动物）食物；喂养", "unit": "U5"},
+      {"word": "herd", "phonetic": "/hɜːd/", "chinese": "牧放（牲畜、兽群）", "unit": "U5"},
+      {"word": "goat", "phonetic": "/ɡəʊt/", "chinese": "山羊", "unit": "U5"},
+      {"word": "remember", "phonetic": "/rɪˈmembə(r)/", "chinese": "记得；记起", "unit": "U5"},
+      {"word": "collect", "phonetic": "/kəˈlekt/", "chinese": "收集；采集", "unit": "U5"},
+      {"word": "recognise", "phonetic": "/ˈrekəɡnaɪz/", "chinese": "识别；认出", "unit": "U5"},
+      {"word": "care", "phonetic": "/keə(r)/", "chinese": "照顾；照看", "unit": "U5"},
+      {"word": "prefer", "phonetic": "/prɪˈfɜː(r)/", "chinese": "较喜欢……多于……", "unit": "U5"},
+      {"word": "sign", "phonetic": "/saɪn/", "chinese": "标牌；指示牌", "unit": "U5"},
+      {"word": "bite", "phonetic": "/baɪt/", "chinese": "咬；咬下的一口", "unit": "U5"},
+      {"word": "warning", "phonetic": "/ˈwɔːnɪŋ/", "chinese": "警告；警示", "unit": "U5"},
+      {"word": "peck", "phonetic": "/pek/", "chinese": "啄", "unit": "U5"},
+      {"word": "sweet", "phonetic": "/swiːt/", "chinese": "含糖的；甜的；糖果", "unit": "U5"},
+      {"word": "calf", "phonetic": "/kɑːf/", "chinese": "小牛；牛犊", "unit": "U5"},
+      {"word": "loud", "phonetic": "/laʊd/", "chinese": "大声的；喧闹的", "unit": "U5"},
+      {"word": "noise", "phonetic": "/nɔɪz/", "chinese": "噪音；响声", "unit": "U5"},
+      {"word": "meaning", "phonetic": "/ˈmiːnɪŋ/", "chinese": "意义；意思", "unit": "U5"},
+      {"word": "shout", "phonetic": "/ʃaʊt/", "chinese": "大声说；叫", "unit": "U5"},
+      {"word": "jacket", "phonetic": "/ˈdʒækɪt/", "chinese": "夹克衫；短上衣", "unit": "U5"},
+      {"word": "if", "phonetic": "/ɪf/", "chinese": "如果；假若", "unit": "U5"},
+      {"word": "snack", "phonetic": "/snæk/", "chinese": "点心；小吃", "unit": "U5"},
+      {"word": "could", "phonetic": "/kʊd; kəd/", "chinese": "（询问是否可以做某事）能；可以", "unit": "U5"},
+      {"word": "hen", "phonetic": "/hen/", "chinese": "母鸡", "unit": "U5"},
+      {"word": "diary", "phonetic": "/ˈdaɪəri/", "chinese": "日记；日记簿", "unit": "U5"},
+      {"word": "cookie", "phonetic": "/ˈkʊki/", "chinese": "曲奇饼", "unit": "U5"},
+      {"word": "direct", "phonetic": "/dəˈrekt; daɪˈrekt/", "chinese": "指路；指导", "unit": "U5"},
+      {"word": "yard", "phonetic": "/jɑːd/", "chinese": "（某种用途的）区域，场地", "unit": "U5"},
+      {"word": "glad", "phonetic": "/ɡlæd/", "chinese": "高兴；愉快", "unit": "U5"},
+      {"word": "believe", "phonetic": "/bɪˈliːv/", "chinese": "相信", "unit": "U5"},
+      {"word": "unforgettable", "phonetic": "/ʌnfəˈɡetəbl/", "chinese": "令人难忘的", "unit": "U5"},
+      {"word": "smooth", "phonetic": "/smuːð/", "chinese": "光滑的；平坦的；平整的", "unit": "U5"},
+      {"word": "neck", "phonetic": "/nek/", "chinese": "颈；脖子", "unit": "U5"},
+      {"word": "friendly", "phonetic": "/ˈfrendli/", "chinese": "友爱的；友好的", "unit": "U5"},
+      {"word": "ride", "phonetic": "/raɪd/", "chinese": "骑马；驾驶；（乘车或骑车的）短途旅程", "unit": "U5"}
+    ],
+    "unit6": [
+      {"word": "around", "phonetic": "/əˈraʊnd/", "chinese": "在……周围；大约", "unit": "U6"},
+      {"word": "vacation", "phonetic": "/vəˈkeɪʃn/", "chinese": "假期", "unit": "U6"},
+      {"word": "trip", "phonetic": "/trɪp/", "chinese": "（尤指短程往返的）旅行；旅游；出行", "unit": "U6"},
+      {"word": "popular", "phonetic": "/ˈpɒpjələ(r)/", "chinese": "大众喜爱的；广受欢迎的；当红的", "unit": "U6"},
+      {"word": "tour", "phonetic": "/tʊə(r)/", "chinese": "旅行；旅游", "unit": "U6"},
+      {"word": "tip", "phonetic": "/tɪp/", "chinese": "指点；实用的提示", "unit": "U6"},
+      {"word": "footprint", "phonetic": "/ˈfʊtprɪnt/", "chinese": "脚印；足迹", "unit": "U6"},
+      {"word": "hike", "phonetic": "/haɪk/", "chinese": "徒步旅行", "unit": "U6"},
+      {"word": "nature", "phonetic": "/ˈneɪtʃə(r)/", "chinese": "大自然", "unit": "U6"},
+      {"word": "enjoy", "phonetic": "/ɪnˈdʒɔɪ/", "chinese": "享受；欣赏", "unit": "U6"},
+      {"word": "local", "phonetic": "/ˈləʊkl/", "chinese": "当地的", "unit": "U6"},
+      {"word": "lazy", "phonetic": "/ˈleɪzi/", "chinese": "懒散的；悠闲的", "unit": "U6"},
+      {"word": "roof", "phonetic": "/ruːf/", "chinese": "屋顶；顶部", "unit": "U6"},
+      {"word": "ski", "phonetic": "/skiː/", "chinese": "滑雪", "unit": "U6"},
+      {"word": "reason", "phonetic": "/ˈriːzn/", "chinese": "原因；理由", "unit": "U6"},
+      {"word": "drive", "phonetic": "/draɪv/", "chinese": "驾驶；开车", "unit": "U6"},
+      {"word": "shall", "phonetic": "/ʃæl; ʃəl/", "chinese": "（同I和we连用，表示将来）将要；将会", "unit": "U6"},
+      {"word": "afraid", "phonetic": "/əˈfreɪd/", "chinese": "害怕；畏惧", "unit": "U6"},
+      {"word": "expensive", "phonetic": "/ɪkˈspensɪv/", "chinese": "昂贵的；价格高的", "unit": "U6"},
+      {"word": "price", "phonetic": "/praɪs/", "chinese": "价格；价钱", "unit": "U6"},
+      {"word": "ticket", "phonetic": "/ˈtɪkɪt/", "chinese": "票；入场券", "unit": "U6"},
+      {"word": "better", "phonetic": "/ˈbetə(r)/", "chinese": "较好的；更好的", "unit": "U6"},
+      {"word": "convenient", "phonetic": "/kənˈviːniənt/", "chinese": "方便的；便利的；省事的", "unit": "U6"},
+      {"word": "speed", "phonetic": "/spiːd/", "chinese": "速度", "unit": "U6"},
+      {"word": "comfortable", "phonetic": "/ˈkʌmftəbl/", "chinese": "使人舒服的；舒适的", "unit": "U6"},
+      {"word": "view", "phonetic": "/vjuː/", "chinese": "景色；（尤指）乡间美景；视野；（个人的）看法", "unit": "U6"},
+      {"word": "carry", "phonetic": "/ˈkæri/", "chinese": "拿；提；运送；输送", "unit": "U6"},
+      {"word": "plan", "phonetic": "/plæn/", "chinese": "计划；打算", "unit": "U6"},
+      {"word": "own", "phonetic": "/əʊn/", "chinese": "（用于强调）自己的，本人的", "unit": "U6"},
+      {"word": "historical", "phonetic": "/hɪˈstɒrɪkl/", "chinese": "（有关）历史的", "unit": "U6"},
+      {"word": "such", "phonetic": "/sʌtʃ/", "chinese": "这样的；类似的", "unit": "U6"},
+      {"word": "palace", "phonetic": "/ˈpæləs/", "chinese": "宫殿", "unit": "U6"},
+      {"word": "museum", "phonetic": "/mjuˈziːəm/", "chinese": "博物馆", "unit": "U6"},
+      {"word": "national", "phonetic": "/ˈnæʃnəl/", "chinese": "国家的；全国的", "unit": "U6"},
+      {"word": "forest", "phonetic": "/ˈfɒrɪst/", "chinese": "森林；林区", "unit": "U6"},
+      {"word": "mountain", "phonetic": "/ˈmaʊntən/", "chinese": "山；高山", "unit": "U6"},
+      {"word": "postcard", "phonetic": "/ˈpəʊstkɑːd/", "chinese": "明信片", "unit": "U6"},
+      {"word": "volunteer", "phonetic": "/vɒlənˈtɪə(r)/", "chinese": "志愿者；义务工作者", "unit": "U6"},
+      {"word": "opera", "phonetic": "/ˈɒprə/", "chinese": "歌剧", "unit": "U6"},
+      {"word": "myself", "phonetic": "/maɪˈself/", "chinese": "（用于动作影响说话人或作者时）我自己", "unit": "U6"}
+    ]
+  },
+  "grammar": {
+    "sentencePatterns": {
+      "title": "基本句型 Basic Sentence Patterns",
+      "patterns": [
+        {
+          "name": "SV 主谓结构",
+          "formula": "S (subject) + V (verb)",
+          "description": "主语做什么，什么动作发生在主语身上",
+          "examples": [
+            {"s": "The bus", "v": "stops."},
+            {"s": "The school gate", "v": "opens."},
+            {"s": "Yiming", "v": "smiles."},
+            {"s": "It", "v": "rains."}
+          ]
+        },
+        {
+          "name": "SVC 主动补结构",
+          "formula": "S (subject) + V (linking verb) + C (complement)",
+          "description": "主语是什么，怎么样",
+          "examples": [
+            {"s": "My favourite colour", "v": "is", "c": "green."},
+            {"s": "The dress", "v": "looks", "c": "nice!"},
+            {"s": "We", "v": "are", "c": "middle school students."},
+            {"s": "Harry", "v": "is", "c": "my friend."},
+            {"s": "The water", "v": "feels", "c": "warm."},
+            {"s": "I", "v": "am", "c": "sorry."}
+          ]
+        },
+        {
+          "name": "SVO 主谓宾结构",
+          "formula": "S (subject) + V (verb) + O (object)",
+          "description": "主语对宾语做了什么动作",
+          "examples": [
+            {"s": "Yiming", "v": "opens", "o": "the schoolbag."},
+            {"s": "Bailing", "v": "asks", "o": "a question."},
+            {"s": "The students", "v": "are introducing", "o": "themselves."},
+            {"s": "They", "v": "wear", "o": "red scarves."}
+          ]
+        }
+      ]
+    },
+    "presentSimple": {
+      "title": "一般现在时 Present Simple",
+      "usage": ["习惯、常规、预定事件", "普遍真理和事实"],
+      "examples": [
+        "We walk to school every day.",
+        "The school bus arrives at 8 o'clock.",
+        "The sun rises in the east and sets in the west.",
+        "The school year starts in September and ends in June."
+      ],
+      "forms": {
+        "affirmative": [
+          {"subject": "I/You/We/They", "verb": "like", "rest": "the school garden."},
+          {"subject": "He/She/It", "verb": "likes", "rest": "the school garden."}
+        ],
+        "negative": [
+          {"subject": "I/You/We/They", "verb": "don't (do not) like", "rest": "loud music."},
+          {"subject": "He/She/It", "verb": "doesn't (does not) like", "rest": "loud music."}
+        ],
+        "yesNoQuestion": [
+          {"auxiliary": "Do", "subject": "I/you/we/they", "verb": "run fast?", "answer": "Yes, I/you/we/they do. / No, I/you/we/they don't."},
+          {"auxiliary": "Does", "subject": "he/she/it", "verb": "run fast?", "answer": "Yes, he/she/it does. / No, he/she/it doesn't."}
+        ],
+        "whQuestion": [
+          {"questionWord": "What time", "auxiliary": "does", "subject": "your school", "verb": "start?"},
+          {"questionWord": "How", "auxiliary": "do", "subject": "you", "verb": "go to school?"},
+          {"questionWord": "Where", "auxiliary": "do", "subject": "they", "verb": "have class?"}
+        ]
+      }
+    },
+    "presentContinuous": {
+      "title": "现在进行时 Present Continuous",
+      "usage": ["说话时正在进行的动作", "当前一段时间内进行的活动（但不一定在说话时进行）"],
+      "examples": [
+        "Look! My brothers are playing football.",
+        "My sister is studying for her exams these days.",
+        "My brother is doing an experiment these days."
+      ],
+      "forms": {
+        "affirmative": [
+          {"subject": "I", "be": "am/am not", "verb": "playing", "rest": "in the yard."},
+          {"subject": "You/We/They", "be": "are/are not/aren't", "verb": "playing", "rest": "in the yard."},
+          {"subject": "He/She/It", "be": "is/is not/isn't", "verb": "playing", "rest": "in the yard."}
+        ]
+      },
+      "ingRules": [
+        {"rule": "大多数动词", "change": "+ ing", "example": "eat → eating"},
+        {"rule": "以不发音的e结尾的动词", "change": "去e，再加ing", "example": "make → making, ride → riding"},
+        {"rule": "部分以\"一个元音+一个辅音\"结尾的动词", "change": "双写结尾辅音字母，再加ing", "example": "sit → sitting, run → running"}
+      ]
+    },
+    "thirdPersonSingular": {
+      "title": "动词第三人称单数的拼写规则",
+      "rules": [
+        {"verb": "大多数动词", "change": "+ s", "example": "he likes"},
+        {"verb": "以s, x, sh, ch结尾的动词", "change": "+ es", "example": "he misses, she washes, it watches"},
+        {"verb": "以\"辅音字母+y\"结尾的动词", "change": "去y变i，再加es", "example": "he cries"},
+        {"verb": "以o结尾的动词", "change": "+ es", "example": "he goes"},
+        {"verb": "不规则动词", "change": "变形", "example": "she has"}
+      ]
+    },
+    "personalPronouns": {
+      "title": "人称代词 Personal Pronouns",
+      "table": {
+        "firstPerson": {"singular": {"subject": "I", "object": "me"}, "plural": {"subject": "we", "object": "us"}},
+        "secondPerson": {"singular": {"subject": "you", "object": "you"}, "plural": {"subject": "you", "object": "you"}},
+        "thirdPerson": {"singular": {"subject": "he/she/it", "object": "him/her/it"}, "plural": {"subject": "they", "object": "them"}}
+      },
+      "notes": [
+        "She是第三人称单数代词，用于指代女性。He用于指代男性。It用于指代事物和动物。",
+        "当人称代词作主语时，我们称之为主格代词。",
+        "当人称代词作宾语时，我们称之为宾格代词。"
+      ]
+    },
+    "countableUncountable": {
+      "title": "可数与不可数名词 Countable and Uncountable Nouns",
+      "countable": {
+        "singular": "Use a/an: buy a tomato, have an apple",
+        "plural": "Add -s to most nouns: want two cucumbers",
+        "showingAmounts": ["Use numbers: need three oranges", "Use expressions of quantity: buy a bag of noodles, have many eggs, eat a lot of/lots of grapes"]
+      },
+      "uncountable": {
+        "singular": "Don't use a/an: drink milk",
+        "plural": "No plural forms",
+        "showingAmounts": ["Use expressions of quantity: buy a bottle of orange juice, don't have much yogurt, eat a lot of/lots of cheese"]
+      },
+      "askingAbout": {
+        "countable": "Use how many: How many carrots would you like?",
+        "uncountable": "Use how much: How much salt should I add?"
+      }
+    },
+    "pluralNouns": {
+      "title": "可数名词复数的拼写规则",
+      "rules": [
+        {"noun": "大多数名词", "change": "+ s", "example": "pepper → peppers"},
+        {"noun": "以ch, sh, s, ss, x, z结尾的名词", "change": "+ es", "example": "peach → peaches, dish → dishes"},
+        {"noun": "以o结尾的名词", "change": "+ s或es", "example": "kilo → kilos, tomato → tomatoes"},
+        {"noun": "以\"一个元音字母+y\"结尾的名词", "change": "+ s", "example": "day → days"},
+        {"noun": "以\"一个辅音字母+y\"结尾的名词", "change": "去y变i，再加es", "example": "strawberry → strawberries"},
+        {"noun": "部分以f或fe结尾的名词", "change": "去f或fe变v，再加es", "example": "knife → knives"},
+        {"noun": "其他名词", "change": "词尾加字母（组合）", "example": "child → children"},
+        {"noun": "其他名词", "change": "改变元音字母", "example": "goose → geese"},
+        {"noun": "其他名词", "change": "单复数同形", "example": "sheep → sheep"}
+      ]
+    },
+    "adverbsOfFrequency": {
+      "title": "频度副词 Adverbs of Frequency",
+      "order": ["always (100%)", "usually", "often", "sometimes", "seldom", "rarely", "never (0%)"],
+      "position": "频度副词通常位于主要动词之前，be动词除外。",
+      "examples": [
+        "I sometimes go running.",
+        "He often plays tennis.",
+        "I am usually busy with my studies.",
+        "She is never into sports."
+      ]
+    },
+    "questionWords": {
+      "title": "疑问词 Question Words",
+      "whatWho": {
+        "description": "Who或what置于句首。当what或who在疑问句中作主语时，不需要使用助动词(do或does)。当what或who在疑问句中作宾语时，则需要在句子主语前添加助动词do或does。",
+        "asSubject": [
+          {"question": "What are your hobbies?"},
+          {"question": "Who is really into sports?"},
+          {"question": "What attracts you in the game?"},
+          {"question": "Who loves sports?"}
+        ],
+        "asObject": [
+          {"question": "What do you do in your free time?"},
+          {"question": "Who does he play basketball with?"}
+        ]
+      },
+      "howWhenWhereWhy": {
+        "when": "用于询问时间或日期",
+        "where": "用于询问地点或方位",
+        "why": "用于询问原因",
+        "how": "用于询问事物发生的方式",
+        "examples": [
+          {"word": "When", "question": "When do they feed animals every day?"},
+          {"word": "Where", "question": "Where are the goats?"},
+          {"word": "Why", "question": "Why do pigs roll in the mud?"},
+          {"word": "How", "question": "How do pigeons find their way home?"}
+        ]
+      },
+      "howCombinations": [
+        {"phrase": "How far", "usage": "询问距离", "example": "How far is the goat yard?"},
+        {"phrase": "How long", "usage": "询问时长", "example": "How long can elephants live?"},
+        {"phrase": "How often", "usage": "询问频率", "example": "How often do you walk your dog?"},
+        {"phrase": "How many", "usage": "询问可数名词数量", "example": "How many goats does Uncle Lin have?"},
+        {"phrase": "How much", "usage": "询问不可数名词数量", "example": "How much milk does a cow produce in a day?"}
+      ]
+    },
+    "questionTags": {
+      "title": "附加疑问句 Question Tags",
+      "description": "附加疑问句由陈述句或祈使句加简短附加问句构成，用以要求对方证实所述之事。",
+      "rules": [
+        "如果是肯定陈述，则使用否定附加疑问句",
+        "如果是否定陈述，则使用肯定附加疑问句",
+        "对于祈使句，使用shall we或will you作附加疑问句"
+      ],
+      "examples": {
+        "affirmativeToNegative": [
+          {"statement": "Xi'an is a good choice,", "tag": "isn't it?"},
+          {"statement": "We can see a lot of pandas there,", "tag": "can't we?"},
+          {"statement": "They will go by train,", "tag": "won't they?"},
+          {"statement": "Your sister wants to visit the Island of Music,", "tag": "doesn't she?"}
+        ],
+        "negativeToAffirmative": [
+          {"statement": "He isn't going to Hainan this winter,", "tag": "is he?"},
+          {"statement": "You can't make the decision now,", "tag": "can you?"},
+          {"statement": "They won't go by plane,", "tag": "will they?"},
+          {"statement": "The bus doesn't stop here,", "tag": "does it?"}
+        ],
+        "imperative": [
+          {"statement": "Let's take the next bus,", "tag": "shall we?"},
+          {"statement": "Let's not go out tonight,", "tag": "shall we?"},
+          {"statement": "Return to your seats,", "tag": "will you?"},
+          {"statement": "Don't eat food on the bus,", "tag": "will you?"}
+        ]
+      }
+    },
+    "beGoingTo": {
+      "title": "be going to 表示将来时态",
+      "usage": ["将来的计划或安排", "意图、打算", "预测"],
+      "examples": [
+        "We are going to visit the science museum this afternoon.",
+        "I am going to exercise more often.",
+        "It is not going to rain tomorrow."
+      ],
+      "forms": {
+        "affirmative": [
+          {"subject": "I", "be": "am going to", "rest": "travel around China."},
+          {"subject": "She/He", "be": "is going to", "rest": "travel around China."},
+          {"subject": "You/We/They", "be": "are going to", "rest": "travel around China."},
+          {"subject": "It", "be": "is going to", "rest": "be an exciting trip."}
+        ],
+        "negative": [
+          {"subject": "I", "be": "am not going to", "rest": "travel around China."},
+          {"subject": "She/He", "be": "isn't going to", "rest": "travel around China."},
+          {"subject": "You/We/They", "be": "aren't going to", "rest": "travel around China."}
+        ],
+        "question": [
+          {"be": "Am", "subject": "I", "rest": "going to travel around China?"},
+          {"be": "Is", "subject": "she/he", "rest": "going to travel around China?"},
+          {"be": "Are", "subject": "you/we/they", "rest": "going to travel around China?"}
+        ]
+      },
+      "note": "有时，我们在非正式的口语交际中，会用gonna代替going to。"
+    }
+  },
+  "phonetics": {
+    "vowelLetters": {
+      "title": "元音字母在单词中的读音",
+      "letters": {
+        "a": {
+          "long": ["table", "wake"],
+          "short": ["as", "chat", "ask", "glass", "agree", "assistant", "wash", "watch"]
+        },
+        "e": {
+          "long": ["me", "these"],
+          "short": ["egg", "set", "sentence", "experiment"]
+        },
+        "i": {
+          "long": ["hi", "life"],
+          "short": ["music", "history"]
+        },
+        "o": {
+          "long": ["hello", "note"],
+          "short": ["rock", "shop", "polite", "together"]
+        },
+        "u": {
+          "long": ["unit", "use"],
+          "short": ["full", "push", "us", "funny"]
+        }
+      }
+    },
+    "letterCombinations": {
+      "title": "常见字母组合在单词中发元音的情况",
+      "combinations": [
+        {"combo": "ai", "examples": ["wait", "train"]},
+        {"combo": "air", "examples": ["hair", "chair"]},
+        {"combo": "al", "examples": ["ball", "talk", "animal", "hospital", "half", "calm"]},
+        {"combo": "ar", "examples": ["car", "large"]},
+        {"combo": "are", "examples": ["care", "hare"]},
+        {"combo": "au", "examples": ["autumn", "daughter", "aunt", "laugh"]},
+        {"combo": "aw", "examples": ["draw", "saw"]},
+        {"combo": "ay", "examples": ["day", "may"]},
+        {"combo": "ea", "examples": ["break", "great", "bread", "ready", "easy", "team"]},
+        {"combo": "ear", "examples": ["hear", "near", "bear", "wear", "early", "learn"]},
+        {"combo": "ee", "examples": ["knee", "cheese"]},
+        {"combo": "ei", "examples": ["eight", "neighbour", "either", "height"]},
+        {"combo": "er", "examples": ["term", "her", "teacher", "dancer"]},
+        {"combo": "ere", "examples": ["here", "sincere"]},
+        {"combo": "ew", "examples": ["new", "few"]},
+        {"combo": "ie", "examples": ["lie", "pie", "field", "piece", "quiet", "science"]},
+        {"combo": "ir", "examples": ["bird", "first"]},
+        {"combo": "ire", "examples": ["fire", "tired"]},
+        {"combo": "oa", "examples": ["boat", "road"]},
+        {"combo": "oi", "examples": ["oil", "noise"]},
+        {"combo": "or", "examples": ["word", "work", "short", "corn", "actor", "doctor"]},
+        {"combo": "ore", "examples": ["before", "more"]},
+        {"combo": "ou", "examples": ["loud", "shout", "group", "soup", "cousin", "enough"]},
+        {"combo": "our", "examples": ["hour", "our"]},
+        {"combo": "ow", "examples": ["know", "throw", "now", "how"]},
+        {"combo": "oy", "examples": ["enjoy", "toy"]},
+        {"combo": "ur", "examples": ["turn", "nurse"]},
+        {"combo": "ure", "examples": ["nature", "future"]}
+      ]
+    }
+  },
+  "expressions": {
+    "unit1": {
+      "topic": "Asking for information",
+      "phrases": [
+        "When does ... open/close?",
+        "Do you know what time ... starts/finishes?",
+        "Could you tell me how to ...?",
+        "Where is the library/computer lab?"
+      ]
+    },
+    "unit2": {
+      "topics": [
+        {
+          "name": "Describing people",
+          "phrases": [
+            "... is sitting at his/her desk reading a book/cooking dinner in the kitchen/working on his/her computer in the study.",
+            "... has a bright smile/a beard and glasses.",
+            "... is tall and thin with curly blond hair.",
+            "... is wearing a blue shirt and jeans/a dress and a pair of sandals."
+          ]
+        },
+        {
+          "name": "Describing personal feelings",
+          "phrases": [
+            "She is nervous about the test.",
+            "He is relaxed on the beach.",
+            "They are curious about the presents."
+          ]
+        }
+      ]
+    },
+    "unit3": {
+      "topics": [
+        {
+          "name": "Giving thanks",
+          "phrases": [
+            "Thanks a lot.",
+            "I'm grateful for your company today.",
+            "Thank you for being so patient.",
+            "Thanks again for your time today.",
+            "Thanks for carrying my bags."
+          ]
+        },
+        {
+          "name": "Showing steps with signal words",
+          "phrases": [
+            "After that, cook the meat.",
+            "Following this, mix everything together.",
+            "Before everything, turn on the oven.",
+            "Later, place it in the oven.",
+            "Finally, take it out and let it cool."
+          ]
+        }
+      ]
+    },
+    "unit4": {
+      "topics": [
+        {
+          "name": "Showing care",
+          "phrases": [
+            "Are you okay?",
+            "Did you hurt yourself?",
+            "Where does it hurt?",
+            "Do you need to sit down?",
+            "Shall I get you some water/an ice pack?",
+            "I'll go let the coach/teacher know.",
+            "Is there anything I can do to help?"
+          ]
+        },
+        {
+          "name": "Describing sporting places",
+          "phrases": [
+            "on the football field/the volleyball court/the tennis court",
+            "in the swimming pool/the gym/the fitness centre",
+            "at the skate park"
+          ]
+        }
+      ]
+    },
+    "unit5": {
+      "topic": "Asking for permission",
+      "phrases": [
+        "Do you think I could pet the rabbits/ride the pony?",
+        "Would it be okay to give the dog a treat/to take a photo with the parrot?",
+        "May I help brush the horses/feed the fish in the pond?",
+        "Is it alright if I pick some eggs from the coop?",
+        "Do you mind if I watch you milk the cows/walk the dog?"
+      ]
+    },
+    "unit6": {
+      "topics": [
+        {
+          "name": "Making suggestions",
+          "phrases": [
+            "Shall we take the bus there?",
+            "How about/What about taking the subway/going by train to see the countryside/booking a cheap flight?",
+            "Why don't we ride our bikes/go by ferry across the river/rent a car for the trip?",
+            "Let's take the train for a change/save money and take the train."
+          ]
+        },
+        {
+          "name": "Expressing personal feelings",
+          "phrases": [
+            "I'm having so much fun here!",
+            "I miss you but I'm doing great.",
+            "I'm homesick./I miss home.",
+            "I can't believe how amazing this place is.",
+            "I wish you could be here enjoying this with me.",
+            "I'm feeling happy but can't wait to see you again."
+          ]
+        }
+      ]
+    }
+  },
+  "wordGroups": {
+    "unit1_school": {
+      "topic": "School",
+      "categories": {
+        "place": ["garden", "sports ground", "lab"],
+        "activity": ["after-school club", "experiment", "project"],
+        "people": ["teacher", "headmaster"],
+        "subject": ["ICT", "Geography", "History"]
+      }
+    },
+    "unit2_family": {
+      "topic": "Family relations",
+      "members": ["grandmother", "grandfather", "grandparents", "uncle", "aunt", "husband", "wife", "sister", "brother", "father", "mother", "parents", "daughter", "son", "children", "niece", "nephew", "cousins", "grandchildren"]
+    },
+    "unit3_food": {
+      "topic": "Food groups",
+      "categories": {
+        "grains": ["bread", "rice", "noodles", "corn"],
+        "vegetables_and_fruits": ["carrots", "grapes", "tomatoes", "cabbages"],
+        "meat_fish_eggs": ["mutton", "beef", "chicken", "pork"],
+        "milk_and_bean_products": ["cheese", "yogurt", "soy milk"],
+        "other_foods": ["oil", "butter", "salt", "sweets", "biscuits", "hamburgers"]
+      }
+    },
+    "unit4_sports": {
+      "topic": "Doing sports",
+      "verbPhrases": {
+        "play": ["basketball", "tennis", "volleyball", "badminton", "baseball", "football", "tug of war"],
+        "go": ["swimming", "running", "rock climbing", "cycling", "skating"],
+        "do": ["pull-ups", "sit-ups", "press-ups", "yoga", "karate", "exercise", "kung fu"]
+      }
+    },
+    "unit5_animals": {
+      "topic": "Animals and their babies",
+      "pairs": [
+        {"adult": "cat", "baby": "kitten"},
+        {"adult": "hen", "baby": "chick"},
+        {"adult": "cow", "baby": "calf"},
+        {"adult": "dog", "baby": "puppy"},
+        {"adult": "duck", "baby": "duckling"},
+        {"adult": "panda", "baby": "panda cub"},
+        {"adult": "pig", "baby": "piglet"},
+        {"adult": "goose", "baby": "gosling"},
+        {"adult": "sheep", "baby": "lamb"}
+      ]
+    },
+    "unit6_travel": {
+      "topic": "Ways of travelling",
+      "verbPhrases": {
+        "take": ["a bus", "a taxi", "a train", "a plane", "a ship", "a helicopter"],
+        "go by/travel by": ["bus", "car", "bike", "taxi", "train", "plane", "underground"],
+        "get in/get out of": ["a car", "a taxi"],
+        "get on/get off": ["a bus", "a train", "a plane"],
+        "catch": ["a bus", "a boat", "a plane", "a train", "a ferry"]
+      },
+      "otherExpressions": ["go on foot", "ride a bike", "drive a car", "wait for a bus", "miss a bus/a flight"]
+    }
+  },
+  "numbers": {
+    "cardinal": [
+      {"number": 0, "word": "zero"},
+      {"number": 1, "word": "one"},
+      {"number": 2, "word": "two"},
+      {"number": 3, "word": "three"},
+      {"number": 4, "word": "four"},
+      {"number": 5, "word": "five"},
+      {"number": 6, "word": "six"},
+      {"number": 7, "word": "seven"},
+      {"number": 8, "word": "eight"},
+      {"number": 9, "word": "nine"},
+      {"number": 10, "word": "ten"},
+      {"number": 11, "word": "eleven"},
+      {"number": 12, "word": "twelve"},
+      {"number": 13, "word": "thirteen"},
+      {"number": 14, "word": "fourteen"},
+      {"number": 15, "word": "fifteen"},
+      {"number": 16, "word": "sixteen"},
+      {"number": 17, "word": "seventeen"},
+      {"number": 18, "word": "eighteen"},
+      {"number": 19, "word": "nineteen"},
+      {"number": 20, "word": "twenty"},
+      {"number": 21, "word": "twenty-one"},
+      {"number": 30, "word": "thirty"},
+      {"number": 33, "word": "thirty-three"},
+      {"number": 40, "word": "forty"},
+      {"number": 50, "word": "fifty"},
+      {"number": 60, "word": "sixty"},
+      {"number": 70, "word": "seventy"},
+      {"number": 80, "word": "eighty"},
+      {"number": 90, "word": "ninety"},
+      {"number": 100, "word": "one hundred"}
+    ]
+  },
+  "monthsAndDays": {
+    "months": [
+      {"english": "January", "chinese": "一月"},
+      {"english": "February", "chinese": "二月"},
+      {"english": "March", "chinese": "三月"},
+      {"english": "April", "chinese": "四月"},
+      {"english": "May", "chinese": "五月"},
+      {"english": "June", "chinese": "六月"},
+      {"english": "July", "chinese": "七月"},
+      {"english": "August", "chinese": "八月"},
+      {"english": "September", "chinese": "九月"},
+      {"english": "October", "chinese": "十月"},
+      {"english": "November", "chinese": "十一月"},
+      {"english": "December", "chinese": "十二月"}
+    ],
+    "days": [
+      {"english": "Monday", "chinese": "星期一"},
+      {"english": "Tuesday", "chinese": "星期二"},
+      {"english": "Wednesday", "chinese": "星期三"},
+      {"english": "Thursday", "chinese": "星期四"},
+      {"english": "Friday", "chinese": "星期五"},
+      {"english": "Saturday", "chinese": "星期六"},
+      {"english": "Sunday", "chinese": "星期日"}
+    ]
+  }
+}
