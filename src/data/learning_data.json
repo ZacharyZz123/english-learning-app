@@ -1030,7 +1030,7 @@
       "id": "easy",
       "name": "初级",
       "icon": "🌱",
-      "questionCount": 10,
+      "questionCount": 50,
       "description": "快速练习，巩固基础",
       "color": "#4CAF50"
     },
@@ -1038,7 +1038,7 @@
       "id": "medium",
       "name": "中级",
       "icon": "🌿",
-      "questionCount": 20,
+      "questionCount": 150,
       "description": "标准练习，全面掌握",
       "color": "#FF9800"
     },
@@ -1046,7 +1046,7 @@
       "id": "hard",
       "name": "高级",
       "icon": "🌳",
-      "questionCount": 50,
+      "questionCount": 350,
       "description": "强化训练，冲刺满分",
       "color": "#F44336"
     }

@@ -90,10 +90,12 @@ const closeDifficultyModal = () => {
 }
 
 const startQuiz = (level) => {
+  // 保存 category ID，避免 closeDifficultyModal 清空后丢失
+  const categoryId = selectedCategory.value.id
   closeDifficultyModal()
   router.push({
     name: 'quiz',
-    params: { category: selectedCategory.value.id },
+    params: { category: categoryId },
     query: { difficulty: level.id, count: level.questionCount }
   })
 }

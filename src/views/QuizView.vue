@@ -129,10 +129,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useQuizStore } from '../stores/quiz'
 import learningData from '../data/learning_data.json'
+import { generateQuestions } from '../utils/questionGenerator'
 
 const router = useRouter()
 const route = useRoute()
@@ -198,26 +199,24 @@ onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown)
 })
 
+// 监听路由变化，重新加载题目
+watch(
+  () => route.params.category,
+  (newCategory, oldCategory) => {
+    if (newCategory && newCategory !== oldCategory) {
+      loadQuestions()
+    }
+  }
+)
+
 // 加载题目
 const loadQuestions = () => {
   const category = route.params.category
   const difficulty = route.query.difficulty || 'easy'
-  const count = parseInt(route.query.count) || 10
+  const count = parseInt(route.query.count) || 50
   
-  let allQuestions = []
-  
-  if (category === 'comprehensive') {
-    // 综合练习：从所有分类中随机抽取
-    Object.values(learningData.questions).forEach(categoryQuestions => {
-      allQuestions = allQuestions.concat(categoryQuestions)
-    })
-  } else {
-    // 单一分类
-    allQuestions = learningData.questions[category] || []
-  }
-  
-  // 随机打乱并限制数量
-  questions.value = shuffleArray([...allQuestions]).slice(0, Math.min(count, allQuestions.length))
+  // 使用题目生成器动态生成题目
+  questions.value = generateQuestions(category, count)
   
   // 重置状态
   currentIndex.value = 0
