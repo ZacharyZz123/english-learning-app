@@ -12,7 +12,7 @@ npm run build
 REM 添加构建产物到git
 git add .
 git commit -m "build: update dist for Gitee Pages"
-git push origin master
+git push origin main
 
 echo Deployment completed!
 pause
