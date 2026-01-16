@@ -10,6 +10,11 @@
       </div>
     </header>
 
+    <!-- 模式标签 -->
+    <div class="mode-badge" v-if="isChallenge">
+      <span>🔥 挑战模式</span>
+    </div>
+
     <!-- 进度条 -->
     <div class="progress-section">
       <div class="progress-info">
@@ -35,8 +40,14 @@
         💡 音标：{{ currentQuestion.phonetic }}
       </div>
 
-      <!-- 选项列表 -->
-      <div class="options-list">
+      <!-- 填空题提示 (挑战模式) -->
+      <div v-if="currentQuestion.type === 'fillBlank' && currentQuestion.hint" class="hint-box">
+        <span class="hint-label">提示：</span>
+        <span class="hint-text">{{ currentQuestion.hint }}</span>
+      </div>
+
+      <!-- 选择题选项 -->
+      <div v-if="currentQuestion.type === 'choice'" class="options-list">
         <button 
           v-for="(option, index) in currentQuestion.options" 
           :key="index"
@@ -54,6 +65,31 @@
           <span class="option-text">{{ option }}</span>
         </button>
       </div>
+
+      <!-- 填空题输入框 (挑战模式) -->
+      <div v-if="currentQuestion.type === 'fillBlank'" class="fill-blank-section">
+        <div class="input-wrapper" :class="{ 'has-error': showResult && !isCorrect, 'has-success': showResult && isCorrect }">
+          <input 
+            type="text" 
+            v-model="userInput"
+            @keyup.enter="submitFillBlank"
+            :disabled="showResult"
+            placeholder="请输入答案..."
+            class="fill-input"
+            ref="fillInput"
+            autocomplete="off"
+            autocapitalize="off"
+          />
+        </div>
+        <button 
+          v-if="!showResult"
+          class="submit-btn"
+          @click="submitFillBlank"
+          :disabled="!userInput.trim()"
+        >
+          确认提交
+        </button>
+      </div>
     </div>
 
     <!-- 答题详解弹窗 -->
@@ -67,7 +103,12 @@
         <div class="explanation-content">
           <div class="correct-answer">
             <span class="label">正确答案：</span>
-            <span class="answer">{{ currentQuestion.options[currentQuestion.answer] }}</span>
+            <span class="answer">{{ getCorrectAnswerDisplay() }}</span>
+          </div>
+          
+          <div v-if="!isCorrect && currentQuestion.type === 'fillBlank'" class="user-answer">
+            <span class="label">你的答案：</span>
+            <span class="wrong-text">{{ userInput || '(未作答)' }}</span>
           </div>
           
           <div class="explanation-box" v-if="currentQuestion.explanation">
@@ -93,6 +134,10 @@
       <div class="result-modal">
         <div class="result-icon">🎉</div>
         <h2>练习完成！</h2>
+        
+        <div v-if="isChallenge" class="challenge-badge">
+          🔥 挑战模式
+        </div>
         
         <div class="result-stats">
           <div class="stat-item">
@@ -129,7 +174,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useQuizStore } from '../stores/quiz'
 import learningData from '../data/learning_data.json'
@@ -140,11 +185,13 @@ const route = useRoute()
 const quizStore = useQuizStore()
 
 const optionLetters = ['A', 'B', 'C', 'D']
+const fillInput = ref(null)
 
 // 状态
 const questions = ref([])
 const currentIndex = ref(0)
 const selectedAnswer = ref(null)
+const userInput = ref('')
 const showResult = ref(false)
 const showExplanation = ref(false)
 const isCorrect = ref(false)
@@ -152,6 +199,11 @@ const correctCount = ref(0)
 const wrongCount = ref(0)
 const quizCompleted = ref(false)
 const wrongAnswers = ref([])
+
+// 是否挑战模式
+const isChallenge = computed(() => {
+  return route.query.mode === 'challenge'
+})
 
 // 获取分类名称
 const categoryName = computed(() => {
@@ -189,6 +241,15 @@ const accuracy = computed(() => {
   return Math.round((correctCount.value / total) * 100)
 })
 
+// 获取正确答案显示
+const getCorrectAnswerDisplay = () => {
+  if (!currentQuestion.value) return ''
+  if (currentQuestion.value.type === 'fillBlank') {
+    return currentQuestion.value.answer
+  }
+  return currentQuestion.value.options[currentQuestion.value.answer]
+}
+
 // 初始化
 onMounted(() => {
   loadQuestions()
@@ -214,31 +275,31 @@ const loadQuestions = () => {
   const category = route.params.category
   const difficulty = route.query.difficulty || 'easy'
   const count = parseInt(route.query.count) || 50
+  const challengeMode = route.query.mode === 'challenge'
   
   // 使用题目生成器动态生成题目
-  questions.value = generateQuestions(category, count)
+  questions.value = generateQuestions(category, count, challengeMode)
   
   // 重置状态
   currentIndex.value = 0
   selectedAnswer.value = null
+  userInput.value = ''
   showResult.value = false
   showExplanation.value = false
   correctCount.value = 0
   wrongCount.value = 0
   quizCompleted.value = false
   wrongAnswers.value = []
+  
+  // 如果是填空题，聚焦输入框
+  nextTick(() => {
+    if (fillInput.value) {
+      fillInput.value.focus()
+    }
+  })
 }
 
-// 随机打乱数组
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]]
-  }
-  return array
-}
-
-// 选择答案
+// 选择答案（选择题）
 const selectAnswer = (index) => {
   if (showResult.value) return
   
@@ -250,7 +311,6 @@ const selectAnswer = (index) => {
     correctCount.value++
   } else {
     wrongCount.value++
-    // 记录错题
     wrongAnswers.value.push({
       ...currentQuestion.value,
       userAnswer: index,
@@ -258,7 +318,30 @@ const selectAnswer = (index) => {
     })
   }
   
-  // 显示详解
+  showExplanation.value = true
+}
+
+// 提交填空题答案
+const submitFillBlank = () => {
+  if (showResult.value || !userInput.value.trim()) return
+  
+  const answer = userInput.value.trim().toLowerCase()
+  const correctAnswer = currentQuestion.value.answer.toLowerCase()
+  
+  showResult.value = true
+  isCorrect.value = answer === correctAnswer
+  
+  if (isCorrect.value) {
+    correctCount.value++
+  } else {
+    wrongCount.value++
+    wrongAnswers.value.push({
+      ...currentQuestion.value,
+      userAnswer: userInput.value,
+      category: route.params.category
+    })
+  }
+  
   showExplanation.value = true
 }
 
@@ -267,24 +350,29 @@ const nextQuestion = () => {
   showExplanation.value = false
   
   if (isLastQuestion.value) {
-    // 完成练习
     quizCompleted.value = true
-    // 保存错题到store
     if (wrongAnswers.value.length > 0) {
       quizStore.addWrongAnswers(wrongAnswers.value)
     }
-    // 保存统计
     quizStore.addQuizRecord({
       category: route.params.category,
       total: totalQuestions.value,
       correct: correctCount.value,
       wrong: wrongCount.value,
+      isChallenge: isChallenge.value,
       timestamp: Date.now()
     })
   } else {
     currentIndex.value++
     selectedAnswer.value = null
+    userInput.value = ''
     showResult.value = false
+    
+    nextTick(() => {
+      if (fillInput.value) {
+        fillInput.value.focus()
+      }
+    })
   }
 }
 
@@ -326,7 +414,7 @@ const goToWrongBook = () => {
   align-items: center;
   justify-content: space-between;
   padding: 10px 0;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .back-btn {
@@ -363,6 +451,28 @@ const goToWrongBook = () => {
 .score-display .wrong {
   color: #FF5252;
   font-weight: 600;
+}
+
+/* 模式标签 */
+.mode-badge {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.mode-badge span {
+  display: inline-block;
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 /* 进度条 */
@@ -436,6 +546,26 @@ const goToWrongBook = () => {
   margin-bottom: 20px;
 }
 
+.hint-box {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border-left: 4px solid #2196F3;
+}
+
+.hint-label {
+  color: #1565C0;
+  font-weight: 600;
+}
+
+.hint-text {
+  color: #1976D2;
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
 /* 选项列表 */
 .options-list {
   display: flex;
@@ -505,6 +635,65 @@ const goToWrongBook = () => {
   color: #333;
   font-size: 1rem;
   line-height: 1.4;
+}
+
+/* 填空题输入区 */
+.fill-blank-section {
+  margin-top: 20px;
+}
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.fill-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 1.2rem;
+  border: 3px solid #e0e0e0;
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.2s ease;
+  background: #fff;
+}
+
+.fill-input:focus {
+  border-color: #2196F3;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.1);
+}
+
+.input-wrapper.has-error .fill-input {
+  border-color: #FF5252;
+  background: #FFEBEE;
+}
+
+.input-wrapper.has-success .fill-input {
+  border-color: #4CAF50;
+  background: #E8F5E9;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(33, 150, 243, 0.4);
+}
+
+.submit-btn:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
 }
 
 /* 答题详解弹窗 */
@@ -597,7 +786,7 @@ const goToWrongBook = () => {
 }
 
 .correct-answer {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   color: #fff;
 }
 
@@ -609,6 +798,20 @@ const goToWrongBook = () => {
   font-weight: 600;
   color: #4CAF50;
   font-size: 1.1rem;
+}
+
+.user-answer {
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.user-answer .label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.user-answer .wrong-text {
+  color: #FF5252;
+  font-weight: 600;
 }
 
 .explanation-box h3 {
@@ -698,7 +901,17 @@ const goToWrongBook = () => {
 .result-modal h2 {
   color: #fff;
   font-size: 1.8rem;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
+}
+
+.challenge-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
 .result-stats {

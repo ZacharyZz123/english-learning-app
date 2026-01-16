@@ -8,8 +8,37 @@
     <!-- 难度选择弹窗 -->
     <div v-if="showDifficultyModal" class="modal-overlay" @click.self="closeDifficultyModal">
       <div class="difficulty-modal">
-        <h2>选择练习难度</h2>
+        <h2>选择练习模式</h2>
         <p class="modal-category">{{ selectedCategory?.name }}</p>
+        
+        <!-- 模式切换 -->
+        <div class="mode-tabs">
+          <button 
+            class="mode-tab" 
+            :class="{ active: selectedMode === 'normal' }"
+            @click="selectedMode = 'normal'"
+          >
+            <span class="mode-icon">📝</span>
+            <span>选择题</span>
+          </button>
+          <button 
+            class="mode-tab" 
+            :class="{ active: selectedMode === 'challenge', disabled: isChallengeDisabled }"
+            @click="!isChallengeDisabled && (selectedMode = 'challenge')"
+            :disabled="isChallengeDisabled"
+          >
+            <span class="mode-icon">🔥</span>
+            <span>挑战模式</span>
+          </button>
+        </div>
+        
+        <p v-if="isChallengeDisabled" class="mode-hint">
+          💡 音标题目不支持挑战模式
+        </p>
+        <p v-else-if="selectedMode === 'challenge'" class="mode-hint challenge">
+          🔥 挑战模式：题目变为填空题，需要手动输入答案
+        </p>
+        
         <div class="difficulty-list">
           <div 
             v-for="level in difficultyLevels" 
@@ -59,11 +88,27 @@
         <span class="arrow">→</span>
       </div>
     </div>
+    
+    <!-- 底部统计信息 -->
+    <div class="stats-footer">
+      <div class="stat-badge">
+        <span class="stat-icon">📖</span>
+        <span class="stat-text">200+ 词汇</span>
+      </div>
+      <div class="stat-badge">
+        <span class="stat-icon">📝</span>
+        <span class="stat-text">100+ 名词/动词</span>
+      </div>
+      <div class="stat-badge">
+        <span class="stat-icon">🎯</span>
+        <span class="stat-text">400+ 练习题</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import learningData from '../data/learning_data.json'
 
@@ -73,14 +118,21 @@ const categories = ref([])
 const difficultyLevels = ref([])
 const showDifficultyModal = ref(false)
 const selectedCategory = ref(null)
+const selectedMode = ref('normal')
 
 onMounted(() => {
   categories.value = learningData.categories
   difficultyLevels.value = learningData.difficultyLevels
 })
 
+// 音标类型不支持挑战模式
+const isChallengeDisabled = computed(() => {
+  return selectedCategory.value?.id === 'phonics'
+})
+
 const selectCategory = (category) => {
   selectedCategory.value = category
+  selectedMode.value = 'normal'
   showDifficultyModal.value = true
 }
 
@@ -90,13 +142,23 @@ const closeDifficultyModal = () => {
 }
 
 const startQuiz = (level) => {
-  // 保存 category ID，避免 closeDifficultyModal 清空后丢失
   const categoryId = selectedCategory.value.id
+  const mode = selectedMode.value
   closeDifficultyModal()
+  
+  const query = { 
+    difficulty: level.id, 
+    count: level.questionCount 
+  }
+  
+  if (mode === 'challenge') {
+    query.mode = 'challenge'
+  }
+  
   router.push({
     name: 'quiz',
     params: { category: categoryId },
-    query: { difficulty: level.id, count: level.questionCount }
+    query
   })
 }
 </script>
@@ -235,6 +297,36 @@ const startQuiz = (level) => {
   font-weight: 300;
 }
 
+/* 底部统计 */
+.stats-footer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 14px;
+  border-radius: 20px;
+}
+
+.stat-icon {
+  font-size: 1rem;
+}
+
+.stat-text {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+}
+
 /* 难度选择弹窗 */
 .modal-overlay {
   position: fixed;
@@ -287,8 +379,64 @@ const startQuiz = (level) => {
 .modal-category {
   text-align: center;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-size: 0.9rem;
+}
+
+/* 模式切换 */
+.mode-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.mode-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-tab:hover:not(.disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mode-tab.active {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: #4CAF50;
+  color: #fff;
+}
+
+.mode-tab.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.mode-icon {
+  font-size: 1.5rem;
+}
+
+.mode-hint {
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 15px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.mode-hint.challenge {
+  color: #FF9800;
+  background: rgba(255, 152, 0, 0.15);
 }
 
 .difficulty-list {
@@ -366,6 +514,18 @@ const startQuiz = (level) => {
   
   .topic-name {
     font-size: 0.9rem;
+  }
+  
+  .stats-footer {
+    gap: 8px;
+  }
+  
+  .stat-badge {
+    padding: 6px 10px;
+  }
+  
+  .stat-text {
+    font-size: 0.7rem;
   }
 }
 </style>
