@@ -1,478 +1,413 @@
-<script setup>
-import { computed, ref } from 'vue'
-import { useQuizStore } from '../stores/quiz'
-
-const store = useQuizStore()
-const showResetConfirm = ref(false)
-
-const stats = computed(() => store.getStats)
-const categoryStats = computed(() => store.getCategoryStats)
-const wrongCount = computed(() => store.getWrongQuestions.length)
-
-const categories = [
-  { id: 'vocabulary', icon: '📖', name: '词汇翻译' },
-  { id: 'grammar', icon: '📝', name: '语法填空' },
-  { id: 'plurals', icon: '🔢', name: '名词复数' },
-  { id: 'thirdPerson', icon: '👤', name: '动词三单' },
-  { id: 'pronouns', icon: '👥', name: '人称代词' },
-  { id: 'mixed', icon: '🎯', name: '综合练习' }
-]
-
-const getCategoryData = (categoryId) => {
-  const data = categoryStats.value[categoryId]
-  if (!data) {
-    return { total: 0, correct: 0, wrong: 0, accuracy: 0, level: '未开始' }
-  }
-  const total = data.correct + data.wrong
-  const accuracy = total > 0 ? Math.round((data.correct / total) * 100) : 0
-  let level = '未开始'
-  let levelColor = 'gray'
-  
-  if (total > 0) {
-    if (accuracy >= 90) {
-      level = '精通'
-      levelColor = 'green'
-    } else if (accuracy >= 70) {
-      level = '熟练'
-      levelColor = 'blue'
-    } else if (accuracy >= 50) {
-      level = '学习中'
-      levelColor = 'yellow'
-    } else {
-      level = '需加强'
-      levelColor = 'red'
-    }
-  }
-  
-  return { total, correct: data.correct, wrong: data.wrong, accuracy, level, levelColor }
-}
-
-const resetStats = () => {
-  store.resetStats()
-  showResetConfirm.value = false
-}
-</script>
-
 <template>
-  <div class="stats-page">
-    <header class="page-header">
-      <h1 class="page-title">📊 学习统计</h1>
-      <p class="page-subtitle">查看你的学习进度</p>
+  <div class="stats-view">
+    <header class="stats-header">
+      <h1>📊 学习统计</h1>
+      <p class="subtitle">查看你的学习进度</p>
     </header>
-    
+
     <!-- 总体统计 -->
-    <section class="overview-section">
-      <div class="overview-card">
-        <div class="overview-item">
-          <div class="overview-icon">📚</div>
-          <div class="overview-value">{{ stats.totalCorrect + stats.totalWrong }}</div>
-          <div class="overview-label">总答题数</div>
-        </div>
-        
-        <div class="overview-item">
-          <div class="overview-icon">✅</div>
-          <div class="overview-value correct">{{ stats.totalCorrect }}</div>
-          <div class="overview-label">答对</div>
-        </div>
-        
-        <div class="overview-item">
-          <div class="overview-icon">❌</div>
-          <div class="overview-value wrong">{{ stats.totalWrong }}</div>
-          <div class="overview-label">答错</div>
-        </div>
-        
-        <div class="overview-item">
-          <div class="overview-icon">🎯</div>
-          <div class="overview-value highlight">{{ stats.accuracy }}%</div>
-          <div class="overview-label">正确率</div>
+    <div class="overall-stats">
+      <div class="stat-card main">
+        <div class="stat-circle" :style="{ '--accuracy': stats.accuracy }">
+          <span class="stat-value">{{ stats.accuracy }}%</span>
+          <span class="stat-label">正确率</span>
         </div>
       </div>
-    </section>
-    
+      
+      <div class="stat-row">
+        <div class="stat-card">
+          <span class="stat-icon">📝</span>
+          <span class="stat-value">{{ stats.totalQuestions }}</span>
+          <span class="stat-label">总答题</span>
+        </div>
+        <div class="stat-card correct">
+          <span class="stat-icon">✓</span>
+          <span class="stat-value">{{ stats.totalCorrect }}</span>
+          <span class="stat-label">正确</span>
+        </div>
+        <div class="stat-card wrong">
+          <span class="stat-icon">✗</span>
+          <span class="stat-value">{{ stats.totalWrong }}</span>
+          <span class="stat-label">错误</span>
+        </div>
+      </div>
+    </div>
+
     <!-- 分类统计 -->
-    <section class="category-section">
-      <h2 class="section-title">各知识点掌握度</h2>
+    <div class="category-stats" v-if="Object.keys(categoryStats).length > 0">
+      <h2 class="section-title">📚 分类进度</h2>
       
       <div class="category-list">
-        <div
-          v-for="category in categories"
-          :key="category.id"
+        <div 
+          v-for="(data, categoryId) in categoryStats" 
+          :key="categoryId"
           class="category-card"
         >
-          <div class="category-header">
-            <span class="category-icon">{{ category.icon }}</span>
-            <span class="category-name">{{ category.name }}</span>
-            <span 
-              class="category-level"
-              :class="getCategoryData(category.id).levelColor"
-            >
-              {{ getCategoryData(category.id).level }}
+          <div class="category-info">
+            <span class="category-name">{{ getCategoryName(categoryId) }}</span>
+            <span class="category-count">{{ data.total }}题</span>
+          </div>
+          <div class="category-progress">
+            <div class="progress-bar">
+              <div 
+                class="progress-fill" 
+                :style="{ width: getCategoryAccuracy(data) + '%' }"
+              ></div>
+            </div>
+            <span class="accuracy-text">{{ getCategoryAccuracy(data) }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 最近练习记录 -->
+    <div class="recent-records" v-if="recentRecords.length > 0">
+      <h2 class="section-title">🕐 最近练习</h2>
+      
+      <div class="records-list">
+        <div 
+          v-for="record in recentRecords.slice(0, 10)" 
+          :key="record.id"
+          class="record-card"
+        >
+          <div class="record-left">
+            <span class="record-category">{{ getCategoryName(record.category) }}</span>
+            <span class="record-time">{{ formatTime(record.timestamp) }}</span>
+          </div>
+          <div class="record-right">
+            <span class="record-score" :class="{ good: getRecordAccuracy(record) >= 80 }">
+              {{ record.correct }}/{{ record.total }}
             </span>
-          </div>
-          
-          <div class="category-stats">
-            <div class="mini-stat">
-              <span class="mini-value">{{ getCategoryData(category.id).total }}</span>
-              <span class="mini-label">题目</span>
-            </div>
-            <div class="mini-stat">
-              <span class="mini-value correct">{{ getCategoryData(category.id).correct }}</span>
-              <span class="mini-label">正确</span>
-            </div>
-            <div class="mini-stat">
-              <span class="mini-value">{{ getCategoryData(category.id).accuracy }}%</span>
-              <span class="mini-label">准确率</span>
-            </div>
-          </div>
-          
-          <div class="progress-bar">
-            <div 
-              class="progress-fill"
-              :class="getCategoryData(category.id).levelColor"
-              :style="{ width: `${getCategoryData(category.id).accuracy}%` }"
-            ></div>
+            <span class="record-accuracy">{{ getRecordAccuracy(record) }}%</span>
           </div>
         </div>
       </div>
-    </section>
-    
-    <!-- 错题本统计 -->
-    <section class="wrong-section">
-      <div class="wrong-card">
-        <div class="wrong-icon">📝</div>
-        <div class="wrong-info">
-          <h3>错题本</h3>
-          <p>待复习 <strong>{{ wrongCount }}</strong> 道错题</p>
-        </div>
-        <RouterLink to="/wrongbook" class="btn btn-secondary btn-sm">
-          查看
-        </RouterLink>
-      </div>
-    </section>
-    
+    </div>
+
     <!-- 重置按钮 -->
-    <section class="reset-section">
-      <button class="reset-btn" @click="showResetConfirm = true">
-        🔄 重置所有统计数据
+    <div class="reset-section">
+      <button class="reset-btn" @click="resetAllStats">
+        🗑️ 重置所有统计数据
       </button>
-    </section>
-    
-    <!-- 重置确认弹窗 -->
-    <div v-if="showResetConfirm" class="modal-overlay" @click="showResetConfirm = false">
-      <div class="modal-content" @click.stop>
-        <h3 class="modal-title">确认重置</h3>
-        <p class="modal-desc">确定要重置所有统计数据吗？此操作无法撤销。</p>
-        <div class="modal-actions">
-          <button class="btn btn-secondary" @click="showResetConfirm = false">
-            取消
-          </button>
-          <button class="btn btn-danger" @click="resetStats">
-            确认重置
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
+<script setup>
+import { computed } from 'vue'
+import { useQuizStore } from '../stores/quiz'
+import learningData from '../data/learning_data.json'
+
+const quizStore = useQuizStore()
+
+const stats = computed(() => quizStore.getStats)
+const categoryStats = computed(() => quizStore.getCategoryStats)
+const recentRecords = computed(() => quizStore.getQuizRecords)
+
+const getCategoryName = (categoryId) => {
+  if (categoryId === 'comprehensive') return '综合练习'
+  if (categoryId === 'wrongbook') return '错题重做'
+  const category = learningData.categories.find(c => c.id === categoryId)
+  return category ? category.name : categoryId
+}
+
+const getCategoryAccuracy = (data) => {
+  const total = data.correct + data.wrong
+  if (total === 0) return 0
+  return Math.round((data.correct / total) * 100)
+}
+
+const getRecordAccuracy = (record) => {
+  if (record.total === 0) return 0
+  return Math.round((record.correct / record.total) * 100)
+}
+
+const formatTime = (timestamp) => {
+  if (!timestamp) return ''
+  const date = new Date(timestamp)
+  const now = new Date()
+  const diff = now - date
+  
+  if (diff < 60000) return '刚刚'
+  if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`
+  if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`
+  if (diff < 604800000) return `${Math.floor(diff / 86400000)}天前`
+  
+  return `${date.getMonth() + 1}月${date.getDate()}日`
+}
+
+const resetAllStats = () => {
+  if (confirm('确定要重置所有统计数据吗？此操作不可撤销。')) {
+    quizStore.resetStats()
+  }
+}
+</script>
+
 <style scoped>
-.stats-page {
-  max-width: 600px;
-  margin: 0 auto;
-  animation: fadeIn 0.4s ease-out;
+.stats-view {
+  min-height: 100vh;
+  padding: 20px;
+  padding-bottom: 100px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
 
-.page-header {
+.stats-header {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 25px;
+  padding: 15px 0;
 }
 
-.page-title {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
+.stats-header h1 {
+  color: #fff;
+  font-size: 1.6rem;
+  margin-bottom: 5px;
 }
 
-.page-subtitle {
-  font-size: 1rem;
-  color: var(--text-secondary);
+.subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
 }
 
-.overview-section {
-  margin-bottom: 2rem;
+/* 总体统计 */
+.overall-stats {
+  max-width: 500px;
+  margin: 0 auto 30px;
 }
 
-.overview-card {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
-  background: white;
-  border-radius: var(--radius-xl);
-  padding: 1.5rem 1rem;
-  box-shadow: var(--shadow-lg);
+.stat-card.main {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-.overview-item {
+.stat-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #4CAF50 calc(var(--accuracy) * 1%), 
+    rgba(255, 255, 255, 0.15) 0
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
+  justify-content: center;
+  margin: 0 auto;
+  position: relative;
 }
 
-.overview-icon {
-  font-size: 1.5rem;
-  margin-bottom: 0.25rem;
+.stat-circle::before {
+  content: '';
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  background: #1e3a5f;
+  border-radius: 50%;
 }
 
-.overview-value {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.overview-value.correct {
-  color: var(--success);
-}
-
-.overview-value.wrong {
-  color: var(--danger);
-}
-
-.overview-value.highlight {
-  color: var(--primary);
-}
-
-.overview-label {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-
-.section-title {
-  font-size: 1rem;
+.stat-circle .stat-value {
+  position: relative;
+  font-size: 2.2rem;
   font-weight: 700;
-  color: var(--text-secondary);
-  margin-bottom: 1rem;
+  color: #4CAF50;
+}
+
+.stat-circle .stat-label {
+  position: relative;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+
+.stat-row {
+  display: flex;
+  gap: 10px;
+}
+
+.stat-card {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+}
+
+.stat-icon {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.stat-card .stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.stat-card.correct .stat-value {
+  color: #4CAF50;
+}
+
+.stat-card.wrong .stat-value {
+  color: #FF5252;
+}
+
+.stat-card .stat-label {
+  display: block;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  margin-top: 3px;
+}
+
+/* 分类统计 */
+.section-title {
+  color: #fff;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  padding-left: 5px;
+}
+
+.category-stats {
+  max-width: 500px;
+  margin: 0 auto 30px;
 }
 
 .category-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
+  gap: 10px;
 }
 
 .category-card {
-  background: white;
-  border-radius: var(--radius-lg);
-  padding: 1rem;
-  box-shadow: var(--shadow-md);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 15px;
 }
 
-.category-header {
+.category-info {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.category-icon {
-  font-size: 1.25rem;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .category-name {
-  flex: 1;
-  font-weight: 700;
-  color: var(--text-primary);
+  color: #fff;
+  font-weight: 500;
 }
 
-.category-level {
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-full);
+.category-count {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
 }
 
-.category-level.gray {
-  background: var(--bg-tertiary);
-  color: var(--text-muted);
-}
-
-.category-level.green {
-  background: #dcfce7;
-  color: #16a34a;
-}
-
-.category-level.blue {
-  background: #dbeafe;
-  color: #2563eb;
-}
-
-.category-level.yellow {
-  background: #fef3c7;
-  color: #d97706;
-}
-
-.category-level.red {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-.category-stats {
+.category-progress {
   display: flex;
-  gap: 1.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.mini-stat {
-  display: flex;
-  align-items: baseline;
-  gap: 0.25rem;
-}
-
-.mini-value {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.mini-value.correct {
-  color: var(--success);
-}
-
-.mini-label {
-  font-size: 0.7rem;
-  color: var(--text-muted);
+  align-items: center;
+  gap: 10px;
 }
 
 .progress-bar {
-  height: 0.5rem;
-  background: var(--bg-tertiary);
-  border-radius: var(--radius-full);
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  border-radius: var(--radius-full);
-  transition: width var(--transition-normal);
+  background: linear-gradient(90deg, #4CAF50 0%, #8BC34A 100%);
+  border-radius: 10px;
+  transition: width 0.3s ease;
 }
 
-.progress-fill.gray {
-  background: var(--text-muted);
+.accuracy-text {
+  color: #4CAF50;
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 45px;
+  text-align: right;
 }
 
-.progress-fill.green {
-  background: linear-gradient(90deg, #22c55e, #16a34a);
+/* 最近记录 */
+.recent-records {
+  max-width: 500px;
+  margin: 0 auto 30px;
 }
 
-.progress-fill.blue {
-  background: linear-gradient(90deg, #3b82f6, #2563eb);
-}
-
-.progress-fill.yellow {
-  background: linear-gradient(90deg, #f59e0b, #d97706);
-}
-
-.progress-fill.red {
-  background: linear-gradient(90deg, #ef4444, #dc2626);
-}
-
-.wrong-section {
-  margin-bottom: 2rem;
-}
-
-.wrong-card {
+.records-list {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.record-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px 15px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  background: white;
-  border-radius: var(--radius-lg);
-  padding: 1rem;
-  box-shadow: var(--shadow-md);
 }
 
-.wrong-icon {
-  font-size: 2rem;
+.record-left {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.wrong-info {
-  flex: 1;
+.record-category {
+  color: #fff;
+  font-size: 0.9rem;
 }
 
-.wrong-info h3 {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 0.25rem;
+.record-time {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
 }
 
-.wrong-info p {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
+.record-right {
+  text-align: right;
 }
 
-.wrong-info strong {
-  color: var(--warning);
+.record-score {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
+.record-score.good {
+  color: #4CAF50;
+}
+
+.record-accuracy {
+  display: block;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
+}
+
+/* 重置按钮 */
 .reset-section {
+  max-width: 500px;
+  margin: 30px auto;
   text-align: center;
-  padding-bottom: 2rem;
 }
 
 .reset-btn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 0.875rem;
-  font-family: inherit;
+  padding: 12px 30px;
+  background: rgba(255, 82, 82, 0.2);
+  border: 1px solid rgba(255, 82, 82, 0.5);
+  border-radius: 10px;
+  color: #FF5252;
+  font-size: 0.9rem;
   cursor: pointer;
-  padding: 0.5rem 1rem;
-  transition: color var(--transition-fast);
+  transition: all 0.2s ease;
 }
 
 .reset-btn:hover {
-  color: var(--danger);
-}
-
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-  animation: fadeIn 0.2s ease-out;
-}
-
-.modal-content {
-  background: white;
-  border-radius: var(--radius-xl);
-  padding: 2rem;
-  max-width: 350px;
-  width: 90%;
-  text-align: center;
-}
-
-.modal-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-}
-
-.modal-desc {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: center;
+  background: rgba(255, 82, 82, 0.3);
 }
 </style>

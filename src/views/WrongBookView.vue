@@ -1,165 +1,70 @@
-<script setup>
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useQuizStore } from '../stores/quiz'
-
-const router = useRouter()
-const store = useQuizStore()
-
-const selectedCategory = ref('all')
-const showClearConfirm = ref(false)
-
-const wrongQuestions = computed(() => store.getWrongQuestions)
-
-const filteredQuestions = computed(() => {
-  if (selectedCategory.value === 'all') {
-    return wrongQuestions.value
-  }
-  return wrongQuestions.value.filter(q => q.category === selectedCategory.value)
-})
-
-const categories = computed(() => {
-  const cats = new Set(wrongQuestions.value.map(q => q.category))
-  return [
-    { id: 'all', name: '全部' },
-    ...Array.from(cats).map(id => ({
-      id,
-      name: getCategoryName(id)
-    }))
-  ]
-})
-
-const getCategoryName = (id) => {
-  const names = {
-    vocabulary: '词汇翻译',
-    grammar: '语法填空',
-    plurals: '名词复数',
-    thirdPerson: '动词三单',
-    pronouns: '人称代词',
-    translation: '句子翻译',
-    mixed: '综合练习'
-  }
-  return names[id] || id
-}
-
-const removeQuestion = (index) => {
-  // 找到在原始数组中的索引
-  const question = filteredQuestions.value[index]
-  const originalIndex = wrongQuestions.value.findIndex(
-    q => q.question === question.question && q.answer === question.answer
-  )
-  if (originalIndex !== -1) {
-    store.removeFromWrongBook(originalIndex)
-  }
-}
-
-const clearAll = () => {
-  store.clearWrongBook()
-  showClearConfirm.value = false
-}
-
-const formatDate = (timestamp) => {
-  const date = new Date(timestamp)
-  return date.toLocaleDateString('zh-CN', {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
-}
-
-const practiceWrong = () => {
-  // 使用错题进行练习
-  if (filteredQuestions.value.length === 0) return
-  router.push('/quiz/mixed')
-}
-</script>
-
 <template>
-  <div class="wrongbook-page">
-    <header class="page-header">
-      <h1 class="page-title">📝 错题本</h1>
-      <p class="page-subtitle">共 {{ wrongQuestions.length }} 道错题</p>
+  <div class="wrongbook-view">
+    <header class="wrongbook-header">
+      <h1>📝 错题本</h1>
+      <p class="subtitle">共 {{ wrongQuestions.length }} 道错题</p>
     </header>
-    
+
     <!-- 空状态 -->
     <div v-if="wrongQuestions.length === 0" class="empty-state">
       <div class="empty-icon">🎉</div>
-      <h2 class="empty-title">暂无错题</h2>
-      <p class="empty-desc">继续保持，争取不出错！</p>
-      <button class="btn btn-primary" @click="router.push('/topics')">
-        开始练习
-      </button>
+      <h2>太棒了！</h2>
+      <p>你还没有错题记录</p>
+      <router-link to="/topics" class="start-btn">去练习</router-link>
     </div>
-    
-    <template v-else>
-      <!-- 筛选和操作 -->
+
+    <!-- 错题列表 -->
+    <div v-else class="wrong-list">
       <div class="actions-bar">
-        <div class="filter-tabs">
-          <button
-            v-for="cat in categories"
-            :key="cat.id"
-            class="filter-tab"
-            :class="{ active: selectedCategory === cat.id }"
-            @click="selectedCategory = cat.id"
-          >
-            {{ cat.name }}
-          </button>
-        </div>
-        
-        <button 
-          class="clear-btn"
-          @click="showClearConfirm = true"
-        >
+        <button class="redo-all-btn" @click="redoAll">
+          🔄 重做全部错题
+        </button>
+        <button class="clear-btn" @click="clearAll">
           🗑️ 清空
         </button>
       </div>
-      
-      <!-- 错题列表 -->
-      <div class="questions-list">
-        <div
-          v-for="(question, index) in filteredQuestions"
-          :key="index"
-          class="question-card"
-        >
-          <div class="question-header">
-            <span class="category-tag">{{ getCategoryName(question.category) }}</span>
-            <span class="time-tag">{{ formatDate(question.timestamp) }}</span>
-          </div>
-          
-          <div class="question-content">
-            <p class="question-text">{{ question.question }}</p>
-          </div>
-          
-          <div class="answer-section">
-            <div class="correct-answer">
-              <span class="answer-label">正确答案：</span>
-              <span class="answer-text">{{ question.answer }}</span>
-            </div>
-          </div>
-          
-          <button 
-            class="remove-btn"
-            @click="removeQuestion(index)"
-            title="移除此题"
-          >
-            ✕
-          </button>
+
+      <div 
+        v-for="(question, index) in wrongQuestions" 
+        :key="question.id || index"
+        class="wrong-card"
+      >
+        <div class="card-header">
+          <span class="category-tag">{{ getCategoryName(question.category) }}</span>
+          <span class="time">{{ formatTime(question.timestamp) }}</span>
         </div>
-      </div>
-    </template>
-    
-    <!-- 清空确认弹窗 -->
-    <div v-if="showClearConfirm" class="modal-overlay" @click="showClearConfirm = false">
-      <div class="modal-content" @click.stop>
-        <h3 class="modal-title">确认清空</h3>
-        <p class="modal-desc">确定要清空所有错题吗？此操作无法撤销。</p>
-        <div class="modal-actions">
-          <button class="btn btn-secondary" @click="showClearConfirm = false">
-            取消
+        
+        <div class="question-text">{{ question.question }}</div>
+        
+        <div class="answers-section">
+          <div class="your-answer wrong">
+            <span class="label">你的答案：</span>
+            <span class="value">{{ question.options[question.userAnswer] }}</span>
+          </div>
+          <div class="correct-answer">
+            <span class="label">正确答案：</span>
+            <span class="value">{{ question.options[question.answer] }}</span>
+          </div>
+        </div>
+
+        <div v-if="question.explanation" class="explanation-section">
+          <button 
+            class="toggle-explanation" 
+            @click="toggleExplanation(question.id)"
+          >
+            {{ expandedIds.includes(question.id) ? '收起解析 ▲' : '查看解析 ▼' }}
           </button>
-          <button class="btn btn-danger" @click="clearAll">
-            确认清空
+          
+          <div v-if="expandedIds.includes(question.id)" class="explanation-content">
+            <h4>{{ question.explanation.title }}</h4>
+            <p>{{ question.explanation.content }}</p>
+            <pre>{{ question.explanation.detail }}</pre>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <button class="action-btn" @click="removeQuestion(question.id)">
+            移除
           </button>
         </div>
       </div>
@@ -167,239 +72,300 @@ const practiceWrong = () => {
   </div>
 </template>
 
+<script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useQuizStore } from '../stores/quiz'
+import learningData from '../data/learning_data.json'
+
+const router = useRouter()
+const quizStore = useQuizStore()
+
+const expandedIds = ref([])
+
+const wrongQuestions = computed(() => quizStore.getWrongQuestions)
+
+const getCategoryName = (categoryId) => {
+  if (categoryId === 'comprehensive') return '综合练习'
+  const category = learningData.categories.find(c => c.id === categoryId)
+  return category ? category.name : '练习'
+}
+
+const formatTime = (timestamp) => {
+  if (!timestamp) return ''
+  const date = new Date(timestamp)
+  const now = new Date()
+  const diff = now - date
+  
+  if (diff < 60000) return '刚刚'
+  if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`
+  if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`
+  if (diff < 604800000) return `${Math.floor(diff / 86400000)}天前`
+  
+  return `${date.getMonth() + 1}/${date.getDate()}`
+}
+
+const toggleExplanation = (id) => {
+  const index = expandedIds.value.indexOf(id)
+  if (index > -1) {
+    expandedIds.value.splice(index, 1)
+  } else {
+    expandedIds.value.push(id)
+  }
+}
+
+const removeQuestion = (id) => {
+  quizStore.removeFromWrongBook(id)
+}
+
+const clearAll = () => {
+  if (confirm('确定要清空所有错题吗？')) {
+    quizStore.clearWrongBook()
+  }
+}
+
+const redoAll = () => {
+  router.push({
+    name: 'quiz',
+    params: { category: 'wrongbook' },
+    query: { redo: 'true' }
+  })
+}
+</script>
+
 <style scoped>
-.wrongbook-page {
-  max-width: 600px;
-  margin: 0 auto;
-  animation: fadeIn 0.4s ease-out;
+.wrongbook-view {
+  min-height: 100vh;
+  padding: 20px;
+  padding-bottom: 100px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
 
-.page-header {
+.wrongbook-header {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 25px;
+  padding: 15px 0;
 }
 
-.page-title {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
+.wrongbook-header h1 {
+  color: #fff;
+  font-size: 1.6rem;
+  margin-bottom: 5px;
 }
 
-.page-subtitle {
-  font-size: 1rem;
-  color: var(--text-secondary);
+.subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
 }
 
+/* 空状态 */
 .empty-state {
   text-align: center;
-  padding: 3rem 1rem;
-  background: white;
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
+  padding: 60px 20px;
 }
 
 .empty-icon {
   font-size: 4rem;
-  margin-bottom: 1rem;
+  margin-bottom: 15px;
 }
 
-.empty-title {
+.empty-state h2 {
+  color: #fff;
   font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 10px;
 }
 
-.empty-desc {
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
+.empty-state p {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 25px;
 }
 
+.start-btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
+}
+
+/* 操作栏 */
 .actions-bar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.filter-tabs {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.filter-tab {
-  padding: 0.5rem 1rem;
-  background: white;
-  border: 2px solid var(--border);
-  border-radius: var(--radius-full);
-  font-size: 0.875rem;
-  font-weight: 600;
-  font-family: inherit;
+.redo-all-btn, .clear-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all 0.2s ease;
+  border: none;
 }
 
-.filter-tab:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-.filter-tab.active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
+.redo-all-btn {
+  background: linear-gradient(135deg, #2196F3 0%, #03A9F4 100%);
+  color: #fff;
 }
 
 .clear-btn {
-  padding: 0.5rem 1rem;
-  background: white;
-  border: 2px solid var(--danger);
-  color: var(--danger);
-  border-radius: var(--radius-full);
-  font-size: 0.875rem;
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all var(--transition-fast);
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.clear-btn:hover {
-  background: var(--danger);
-  color: white;
+/* 错题卡片 */
+.wrong-list {
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.questions-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+.wrong-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
-.question-card {
-  position: relative;
-  background: white;
-  border-radius: var(--radius-lg);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-md);
-  border-left: 4px solid var(--warning);
-}
-
-.question-header {
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 12px;
 }
 
 .category-tag {
-  background: var(--primary-bg);
-  color: var(--primary-dark);
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-full);
-  font-size: 0.7rem;
-  font-weight: 700;
-}
-
-.time-tag {
+  background: linear-gradient(135deg, #FF5252 0%, #FF7043 100%);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 15px;
   font-size: 0.75rem;
-  color: var(--text-muted);
+  font-weight: 500;
 }
 
-.question-content {
-  margin-bottom: 0.75rem;
+.time {
+  color: #999;
+  font-size: 0.8rem;
 }
 
 .question-text {
+  color: #333;
   font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.answers-section {
+  margin-bottom: 12px;
+}
+
+.your-answer, .correct-answer {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.label {
+  color: #666;
+  font-size: 0.85rem;
+  min-width: 70px;
+}
+
+.your-answer.wrong .value {
+  color: #FF5252;
+  font-weight: 500;
+  text-decoration: line-through;
+}
+
+.correct-answer .value {
+  color: #4CAF50;
   font-weight: 600;
-  color: var(--text-primary);
-  line-height: 1.5;
 }
 
-.answer-section {
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--border);
+.explanation-section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #ddd;
 }
 
-.correct-answer {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.answer-label {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-
-.answer-text {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--primary);
-}
-
-.remove-btn {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  width: 1.75rem;
-  height: 1.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg-tertiary);
+.toggle-explanation {
+  width: 100%;
+  padding: 10px;
+  background: #f5f5f5;
   border: none;
-  border-radius: var(--radius-full);
-  color: var(--text-muted);
-  font-size: 0.875rem;
+  border-radius: 8px;
+  color: #666;
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all 0.2s ease;
 }
 
-.remove-btn:hover {
-  background: var(--danger);
-  color: white;
+.toggle-explanation:hover {
+  background: #eee;
 }
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-  animation: fadeIn 0.2s ease-out;
+.explanation-content {
+  margin-top: 12px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
 }
 
-.modal-content {
-  background: white;
-  border-radius: var(--radius-xl);
-  padding: 2rem;
-  max-width: 350px;
-  width: 90%;
-  text-align: center;
+.explanation-content h4 {
+  color: #2196F3;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
 }
 
-.modal-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
+.explanation-content p {
+  color: #333;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
 }
 
-.modal-desc {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
+.explanation-content pre {
+  color: #666;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: inherit;
+  line-height: 1.6;
+  margin: 0;
+  background: #fff;
+  padding: 10px;
+  border-radius: 6px;
 }
 
-.modal-actions {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: center;
+.card-actions {
+  margin-top: 12px;
+  text-align: right;
+}
+
+.action-btn {
+  padding: 6px 15px;
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #666;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: #f5f5f5;
+  border-color: #ccc;
 }
 </style>
